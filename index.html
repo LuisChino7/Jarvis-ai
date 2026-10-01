@@ -273,46 +273,42 @@ function analizarIntencion(mensaje) {
 
     const texto = limpiarTexto(mensaje);
 
-
     /* =========================
-       SALUDOS
+       CONTINUACIÓN DE CONTEXTO
        ========================= */
 
-    const saludos = [
-
-        "hola",
-        "hey",
-        "buenas",
-        "buenos dias",
-        "buenas tardes",
-        "buenas noches",
-        "que onda",
-        "que tal"
-
+    const frasesContinuacion = [
+        "sobre ",
+        "que sea ",
+        "para jovenes",
+        "para jovenes",
+        "que dure ",
+        "dame ",
+        "hazlo ",
+        "quiero que ",
+        "tambien ",
+        "ademas ",
+        "agrega ",
+        "ponle ",
+        "con ",
+        "y que ",
+        "ahora "
     ];
 
-
     if (
-
-        saludos.some(palabra =>
-
-            texto === palabra ||
-
-            texto.startsWith(
-                palabra + " "
-            )
-
+        CHINO.moduloActual !== "Asistente" &&
+        frasesContinuacion.some(frase =>
+            texto.startsWith(frase)
         )
-
     ) {
 
         return {
 
-            modulo: "Asistente",
+            modulo: CHINO.moduloActual,
 
-            intencion: "saludo",
+            intencion: "continuacion",
 
-            confianza: 1
+            confianza: 0.95
 
         };
 
@@ -336,7 +332,6 @@ function analizarIntencion(mensaje) {
         "sermon",
         "sermones",
         "estudio biblico",
-        "estudio de biblia",
         "capitulo",
         "evangelio",
         "jesus",
@@ -346,22 +341,15 @@ function analizarIntencion(mensaje) {
         "oracion",
         "orar",
         "devocional",
-        "devocionales",
         "texto biblico",
-        "ensenanza biblica",
-        "ensenanza cristiana"
+        "ensenanza biblica"
 
     ];
 
-
     if (
-
         palabrasBiblia.some(palabra =>
-
             texto.includes(palabra)
-
         )
-
     ) {
 
         return {
@@ -393,34 +381,22 @@ function analizarIntencion(mensaje) {
         "piano",
         "bateria",
         "bajo",
-        "instrumento",
-        "instrumentos",
         "escala",
         "escalas",
         "ritmo",
-        "ritmos",
         "tonalidad",
-        "tonalidades",
-        "transponer",
-        "transposicion",
         "adoracion",
         "alabanza",
         "worship",
-        "ensayo",
         "musico",
         "musicos"
 
     ];
 
-
     if (
-
         palabrasMusica.some(palabra =>
-
             texto.includes(palabra)
-
         )
-
     ) {
 
         return {
@@ -449,26 +425,16 @@ function analizarIntencion(mensaje) {
         "guiones",
         "entrevista",
         "entrevistas",
-        "preguntas para podcast",
-        "tema para podcast",
-        "temas para podcast",
         "invitado",
         "invitados",
-        "grabacion",
-        "contenido para podcast",
-        "nombre para podcast"
+        "grabacion"
 
     ];
 
-
     if (
-
         palabrasPodcast.some(palabra =>
-
             texto.includes(palabra)
-
         )
-
     ) {
 
         return {
@@ -488,89 +454,6 @@ function analizarIntencion(mensaje) {
        ASISTENTE
        ========================= */
 
-    const palabrasAsistente = [
-
-        "ayudame",
-        "ayuda",
-        "puedes ayudarme",
-        "que puedes hacer",
-        "que sabes hacer",
-        "quien eres",
-        "quien es chino",
-        "chino",
-        "organiza",
-        "organizar",
-        "recordatorio",
-        "recuerdame",
-        "tarea",
-        "tareas",
-        "plan",
-        "planes",
-        "idea",
-        "ideas"
-
-    ];
-
-
-    if (
-
-        palabrasAsistente.some(palabra =>
-
-            texto.includes(palabra)
-
-        )
-
-    ) {
-
-        return {
-
-            modulo: "Asistente",
-
-            intencion: "asistente",
-
-            confianza: 0.85
-
-        };
-
-    }
-
-
-    /* =========================
-       CONTEXTO
-       ========================= */
-
-    const memoria = obtenerMemoria();
-
-
-    if (memoria.length > 0) {
-
-        const ultimoModulo =
-            CHINO.moduloActual;
-
-
-        /*
-           Si el usuario continúa una
-           conversación, mantenemos el
-           módulo actual.
-        */
-
-        return {
-
-            modulo: ultimoModulo,
-
-            intencion: "continuacion",
-
-            confianza: 0.70
-
-        };
-
-    }
-
-
-    /* =========================
-       DESCONOCIDO
-       ========================= */
-
     return {
 
         modulo: "Asistente",
@@ -582,11 +465,6 @@ function analizarIntencion(mensaje) {
     };
 
 }
-
-
-/* =====================================================
-   GENERADOR DE RESPUESTAS
-   ===================================================== */
 
 function generarRespuesta(
 
