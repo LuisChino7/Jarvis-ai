@@ -1,157 +1,206 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CHINO AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #050b14;
-      color: white;
-      text-align: center;
-    }
+<title>CHINO AI</title>
 
-    header {
-      padding: 30px 20px 15px;
-    }
+<style>
 
-    h1 {
-      font-size: 42px;
-      margin: 0;
-      color: #00d9ff;
-      text-shadow: 0 0 20px #00d9ff;
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #050b14;
+    color: white;
+    text-align: center;
+}
 
-    .subtitle {
-      color: #8ea5b8;
-      margin-top: 8px;
-    }
+header {
+    padding: 30px 20px 15px;
+}
 
-    .chat {
-      width: 90%;
-      max-width: 700px;
-      height: 400px;
-      margin: 25px auto;
-      background: #0b1420;
-      border: 1px solid #17354d;
-      border-radius: 20px;
-      padding: 20px;
-      box-sizing: border-box;
-      overflow-y: auto;
-      text-align: left;
-    }
+h1 {
+    font-size: 42px;
+    margin: 0;
+    color: #00d9ff;
+    text-shadow: 0 0 20px #00d9ff;
+}
 
-    .message {
-      margin: 12px 0;
-      padding: 12px 15px;
-      border-radius: 12px;
-      max-width: 80%;
-    }
+.subtitle {
+    color: #8ea5b8;
+    margin-top: 8px;
+}
 
-    .CHINO {
-      background: #102638;
-      border-left: 3px solid #00d9ff;
-    }
+.chat {
+    width: 90%;
+    max-width: 700px;
+    height: 400px;
+    margin: 25px auto;
+    background: #0b1420;
+    border: 1px solid #17354d;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    text-align: left;
+}
 
-    .user {
-      background: #17351f;
-      margin-left: auto;
-      border-right: 3px solid #00ff88;
-    }
+.message {
+    margin: 12px 0;
+    padding: 12px 15px;
+    border-radius: 12px;
+    max-width: 80%;
+    white-space: pre-wrap;
+}
 
-    .input-area {
-      width: 90%;
-      max-width: 700px;
-      margin: auto;
-      display: flex;
-      gap: 10px;
-    }
+.CHINO {
+    background: #102638;
+    border-left: 3px solid #00d9ff;
+}
 
-    input {
-      flex: 1;
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid #24445c;
-      background: #0b1420;
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
+.user {
+    background: #17351f;
+    margin-left: auto;
+    border-right: 3px solid #00ff88;
+}
 
-    button {
-      padding: 14px 18px;
-      border: none;
-      border-radius: 12px;
-      background: #00bcd4;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.input-area {
+    width: 90%;
+    max-width: 700px;
+    margin: auto;
+    display: flex;
+    gap: 10px;
+}
 
-    button:hover {
-      background: #00e5ff;
-    }
+input {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #24445c;
+    background: #0b1420;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
 
-    .modules {
-      margin: 30px auto;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+button {
+    padding: 14px 18px;
+    border: none;
+    border-radius: 12px;
+    background: #00bcd4;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .module {
-      background: #101d2b;
-      border: 1px solid #1d4058;
-    }
-  </style>
+button:hover {
+    background: #00e5ff;
+}
+
+.modules {
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.module {
+    background: #101d2b;
+    border: 1px solid #1d4058;
+}
+
+.status {
+    margin-top: 10px;
+    color: #00ff88;
+    font-size: 13px;
+}
+
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>CHINO AI</h1>
-    <p class="subtitle">Asistente central de IA personal</p>
-  </header>
+<header>
 
-  <div class="chat" id="chat">
-    <div class="message jarvis">
-      🤖 <strong>CHINO:</strong> Sistema iniciado. ¿En qué puedo ayudarte?
-    </div>
-  </div>
+<h1>CHINO AI</h1>
 
-  <div class="input-area">
-    <input
-      type="text"
-      id="userInput"
-      placeholder="Escribe un mensaje..."
-      onkeydown="if(event.key === 'Enter') enviarMensaje()"
-    >
+<p class="subtitle">
+Asistente central de IA personal
+</p>
 
-    <button onclick="enviarMensaje()">Enviar</button>
-  </div>
+<div class="status">
+● Sistema CHINO 3.0 activo
+</div>
 
-  <div class="modules">
-    <button class="module" onclick="modulo('Biblia')">📖 Biblia</button>
-    <button class="module" onclick="modulo('Música')">🎵 Música</button>
-    <button class="module" onclick="modulo('Podcast')">🎙️ Podcast</button>
-    <button class="module" onclick="modulo('Asistente')">🧠 Asistente</button>
-  </div>
+</header>
 
-   <script>
+
+<div class="chat" id="chat">
+
+<div class="message CHINO">
+
+🤖 <strong>CHINO:</strong>
+
+Sistema iniciado.
+
+Estoy listo para ayudarte. ¿Qué vamos a construir hoy?
+
+</div>
+
+</div>
+
+
+<div class="input-area">
+
+<input
+type="text"
+id="userInput"
+placeholder="Escribe un mensaje..."
+onkeydown="if(event.key === 'Enter') enviarMensaje()"
+>
+
+<button onclick="enviarMensaje()">
+Enviar
+</button>
+
+</div>
+
+
+<div class="modules">
+
+<button class="module" onclick="modulo('Biblia')">
+📖 Biblia
+</button>
+
+<button class="module" onclick="modulo('Música')">
+🎵 Música
+</button>
+
+<button class="module" onclick="modulo('Podcast')">
+🎙️ Podcast
+</button>
+
+<button class="module" onclick="modulo('Asistente')">
+🧠 Asistente
+</button>
+
+</div>
+
+
+<script>
 
 /* =====================================================
    CHINO AI 3.0
-   CEREBRO CENTRAL + MEMORIA V1
-   ===================================================== */
+   SISTEMA CENTRAL
+===================================================== */
 
 
 /* =====================================================
-   CONFIGURACIÓN
-   ===================================================== */
+   CONFIGURACIÓN PRINCIPAL
+===================================================== */
 
 const CHINO = {
 
@@ -181,15 +230,11 @@ const CHINO = {
 
 
 /* =====================================================
-   MEMORIA DE CONVERSACIÓN
-   ===================================================== */
+   MEMORIA TEMPORAL
+===================================================== */
 
 let memoriaConversacion = [];
 
-
-/*
-   Guarda un mensaje en la memoria
-*/
 
 function guardarMemoria(rol, mensaje) {
 
@@ -203,59 +248,28 @@ function guardarMemoria(rol, mensaje) {
 
     });
 
-
-    /*
-       Evitamos que la memoria crezca
-       indefinidamente.
-    */
-
-    if (memoriaConversacion.length > 30) {
-
-        memoriaConversacion.shift();
-
-    }
-
-
-    console.log(
-        "🧠 Memoria actual:",
-        memoriaConversacion
-    );
-
 }
 
-
-/*
-   Obtiene los últimos mensajes
-*/
 
 function obtenerMemoria() {
 
-    return memoriaConversacion
-        .slice(-10);
+    return memoriaConversacion.slice(-10);
 
 }
 
-
-/*
-   Limpia la memoria
-*/
 
 function limpiarMemoria() {
 
     memoriaConversacion = [];
 
-    console.log(
-        "🧠 Memoria de CHINO limpiada."
-    );
-
 }
 
 
 /* =====================================================
-   UTILIDADES
-   ===================================================== */
+   NORMALIZAR TEXTO
+===================================================== */
 
-function limpiarTexto(texto) {
+function normalizarTexto(texto) {
 
     return texto
         .toLowerCase()
@@ -266,566 +280,839 @@ function limpiarTexto(texto) {
 }
 
 
-function escaparHTML(texto) {
+/* =====================================================
+   ANALIZAR INTENCIÓN
+===================================================== */
 
-    const div = document.createElement("div");
+function analizarIntencion(mensaje) {
 
-    div.textContent = texto;
+    const texto = normalizarTexto(mensaje);
 
-    return div.innerHTML;
+
+    /* ---------------------------------------------
+       CONTINUACIÓN DE CONVERSACIÓN
+    --------------------------------------------- */
+
+    const esContinuacion =
+
+        texto.startsWith("sobre ") ||
+
+        texto.startsWith("acerca de ") ||
+
+        texto.startsWith("para ") ||
+
+        texto.includes("dame 3 puntos") ||
+
+        texto.includes("3 puntos") ||
+
+        texto.includes("tres puntos") ||
+
+        texto.includes("hazme 3 puntos") ||
+
+        texto.includes("quiero 3 puntos") ||
+
+        texto.includes("agrega ") ||
+
+        texto.includes("tambien ") ||
+
+        texto.includes("ahora ") ||
+
+        texto.includes("que sea ") ||
+
+        texto.includes("dame ") ||
+
+        texto.includes("hazlo ") ||
+
+        texto.includes("desarrolla el punto") ||
+
+        texto.includes("desarrollar el punto") ||
+
+        texto.includes("explica el punto");
+
+
+    if (
+
+        esContinuacion &&
+
+        CHINO.moduloActual !== "Asistente"
+
+    ) {
+
+        return {
+
+            modulo: CHINO.moduloActual,
+
+            intencion: "continuacion",
+
+            confianza: 0.95
+
+        };
+
+    }
+
+
+    /* ---------------------------------------------
+       BIBLIA
+    --------------------------------------------- */
+
+    if (
+
+        texto.includes("biblia") ||
+
+        texto.includes("predica") ||
+
+        texto.includes("predicar") ||
+
+        texto.includes("sermon") ||
+
+        texto.includes("versiculo") ||
+
+        texto.includes("estudio biblico")
+
+    ) {
+
+        return {
+
+            modulo: "Biblia",
+
+            intencion: "biblia",
+
+            confianza: 0.95
+
+        };
+
+    }
+
+
+    /* ---------------------------------------------
+       MÚSICA
+    --------------------------------------------- */
+
+    if (
+
+        texto.includes("musica") ||
+
+        texto.includes("acordes") ||
+
+        texto.includes("acorde") ||
+
+        texto.includes("guitarra") ||
+
+        texto.includes("teclado") ||
+
+        texto.includes("bateria") ||
+
+        texto.includes("adoracion")
+
+    ) {
+
+        return {
+
+            modulo: "Música",
+
+            intencion: "musica",
+
+            confianza: 0.90
+
+        };
+
+    }
+
+
+    /* ---------------------------------------------
+       PODCAST
+    --------------------------------------------- */
+
+    if (
+
+        texto.includes("podcast") ||
+
+        texto.includes("guion") ||
+
+        texto.includes("preguntas para podcast")
+
+    ) {
+
+        return {
+
+            modulo: "Podcast",
+
+            intencion: "podcast",
+
+            confianza: 0.90
+
+        };
+
+    }
+
+
+    /* ---------------------------------------------
+       ASISTENTE
+    --------------------------------------------- */
+
+    return {
+
+        modulo: "Asistente",
+
+        intencion: "general",
+
+        confianza: 0.70
+
+    };
 
 }
 
 
 /* =====================================================
-   CEREBRO CENTRAL
-   ===================================================== */
-function analizarIntencion(mensaje) {
-    const texto = limpiarTexto(mensaje);
-
-    // =====================================
-    // CONTINUACIONES DEL CONTEXTO ACTUAL
-    // =====================================
-
-    const esContinuacion =
-        texto.startsWith("sobre ") ||
-        texto.startsWith("acerca de ") ||
-        texto.startsWith("para ") ||
-        texto.includes("dame 3 puntos") ||
-        texto.includes("3 puntos") ||
-        texto.includes("tres puntos") ||
-        texto.includes("hazme 3 puntos") ||
-        texto.includes("quiero 3 puntos") ||
-        texto.includes("agrega ") ||
-        texto.includes("tambien ") ||
-        texto.includes("ahora ") ||
-        texto.includes("que sea ") ||
-        texto.includes("dame ") ||
-        texto.includes("hazlo ") ||
-        texto.includes("desarrolla el punto") ||
-        texto.includes("desarrollar el punto");
-    if (
-        esContinuacion &&
-        CHINO.moduloActual !== "Asistente"
-    ) {
-        return {
-            modulo: CHINO.moduloActual,
-            intencion: "continuacion",
-            confianza: 0.95
-        };
-    }
-
-    // =====================================
-    // BIBLIA
-    // =====================================
-
-    if (
-        texto.includes("biblia") ||
-        texto.includes("versiculo") ||
-        texto.includes("versiculo") ||
-        texto.includes("predica") ||
-        texto.includes("predicar") ||
-        texto.includes("sermon") ||
-        texto.includes("estudio biblico") ||
-        texto.includes("capitulo") ||
-        texto.includes("evangelio") ||
-        texto.includes("jesus") ||
-        texto.includes("dios") ||
-        texto.includes("oracion") ||
-        texto.includes("devocional")
-    ) {
-        return {
-            modulo: "Biblia",
-            intencion: "biblia",
-            confianza: 0.95
-        };
-    }
-
-    // =====================================
-    // MÚSICA
-    // =====================================
-
-    if (
-        texto.includes("musica") ||
-        texto.includes("cancion") ||
-        texto.includes("acorde") ||
-        texto.includes("guitarra") ||
-        texto.includes("teclado") ||
-        texto.includes("piano") ||
-        texto.includes("bateria") ||
-        texto.includes("bajo") ||
-        texto.includes("escala") ||
-        texto.includes("ritmo") ||
-        texto.includes("tonalidad") ||
-        texto.includes("adoracion") ||
-        texto.includes("alabanza") ||
-        texto.includes("worship")
-    ) {
-        return {
-            modulo: "Música",
-            intencion: "musica",
-            confianza: 0.95
-        };
-    }
-
-    // =====================================
-    // PODCAST
-    // =====================================
-
-    if (
-        texto.includes("podcast") ||
-        texto.includes("episodio") ||
-        texto.includes("guion") ||
-        texto.includes("entrevista") ||
-        texto.includes("invitado") ||
-        texto.includes("grabacion")
-    ) {
-        return {
-            modulo: "Podcast",
-            intencion: "podcast",
-            confianza: 0.95
-        };
-    }
-
-    // =====================================
-    // ASISTENTE
-    // =====================================
-
-    return {
-        modulo: "Asistente",
-        intencion: "asistente",
-        confianza: 0.70
-    };
-}
+   GENERAR RESPUESTA
+===================================================== */
 
 function generarRespuesta(mensaje, analisis) {
 
-    const texto = limpiarTexto(mensaje);
-    const modulo = analisis.modulo;
-    const intencion = analisis.intencion;
+    const texto = normalizarTexto(mensaje);
 
-    // =====================================
-    // CONTEXTO BÍBLICO
-    // =====================================
 
-    if (modulo === "Biblia") {
+    /* =================================================
+       SALUDO
+    ================================================= */
 
-        // Crear proyecto de prédica
-        if (
-            texto.includes("predica") ||
-            texto.includes("predicar") ||
-            texto.includes("sermon")
-        ) {
-            CHINO.contexto.proyecto = "predica";
-        }
+    if (
 
-        // Detectar tema
-        if (texto.startsWith("sobre ")) {
-            CHINO.contexto.tema = mensaje
-                .substring(6)
-                .trim();
-        }
+        texto === "hola" ||
 
-        // Detectar audiencia
-        if (
-            texto.includes("para jovenes") ||
-            texto.includes("para joven")
-        ) {
-            CHINO.contexto.audiencia = "jóvenes";
-        }
+        texto === "hey" ||
 
-        // =====================================
-        // GENERAR 3 PUNTOS
-        // =====================================
+        texto.includes("hola chino")
 
-        if (
-            texto.includes("dame 3 puntos") ||
-            texto.includes("3 puntos") ||
-            texto.includes("tres puntos")
-        ) {
+    ) {
 
-            const tema = CHINO.contexto.tema || "el tema indicado";
-            const audiencia = CHINO.contexto.audiencia || "general";
+        return `
+👋 Hola bro.
 
-            if (tema.toLowerCase().includes("david")) {
+Soy CHINO AI.
 
-                CHINO.contexto.detalles = [
-                    "David aprendió a confiar en Dios antes de enfrentar a Goliat.",
-                    "David no permitió que las opiniones de otros definieran su identidad.",
-                    "David aprendió a esperar el tiempo de Dios para cumplir su propósito."
-                ];
+Estoy listo para trabajar contigo.
 
-                return `
-📖 PRÉDICA: DAVID
+📖 Biblia
+🎵 Música
+🎙️ Podcast
+🧠 Asistente
 
-👥 Audiencia: ${audiencia}
+¿Qué vamos a construir hoy?
+`;
 
-🔥 3 PUNTOS
+    }
 
-1. David aprendió a confiar en Dios antes de enfrentar a Goliat.
 
-2. David no permitió que las opiniones de otros definieran su identidad.
+    /* =================================================
+       DETECTAR PRÉDICA
+    ================================================= */
 
-3. David aprendió a esperar el tiempo de Dios para cumplir su propósito.
+    if (
 
-🧠 Contexto conservado:
-Tema: ${tema}
-Audiencia: ${audiencia}
-                `;
-            }
+        texto.includes("predica") ||
+
+        texto.includes("predicar") ||
+
+        texto.includes("sermon")
+
+    ) {
+
+        CHINO.moduloActual = "Biblia";
+
+        CHINO.contexto.proyecto = "predica";
+
+
+        return `
+📖 MODO PRÉDICA ACTIVADO
+
+Perfecto bro.
+
+Vamos a preparar una prédica.
+
+Ahora dime el tema.
+
+Por ejemplo:
+
+"Sobre David"
+
+o
+
+"Sobre la fe"
+`;
+
+    }
+
+
+    /* =================================================
+       DETECTAR TEMA
+    ================================================= */
+
+    if (
+
+        texto.startsWith("sobre ") ||
+
+        texto.startsWith("acerca de ")
+
+    ) {
+
+        let tema = mensaje
+            .replace(/^sobre /i, "")
+            .replace(/^acerca de /i, "")
+            .trim();
+
+
+        CHINO.contexto.tema = tema;
+
+
+        return `
+🔥 TEMA REGISTRADO
+
+📖 Prédica: ${tema}
+
+Ahora dime para quién quieres prepararla.
+
+Por ejemplo:
+
+"Para jóvenes"
+
+o
+
+"Para toda la iglesia"
+`;
+
+    }
+
+
+    /* =================================================
+       DETECTAR AUDIENCIA
+    ================================================= */
+
+    if (
+
+        texto.includes("para jovenes") ||
+
+        texto.includes("para joven")
+
+    ) {
+
+        CHINO.contexto.audiencia = "Jóvenes";
+
+
+        return `
+👥 AUDIENCIA REGISTRADA
+
+Perfecto.
+
+📖 Tema: ${CHINO.contexto.tema || "Pendiente"}
+
+👥 Audiencia: Jóvenes
+
+Ya tengo el contexto.
+
+Puedes decirme:
+
+"Dame 3 puntos"
+`;
+
+    }
+
+
+    /* =================================================
+       GENERAR 3 PUNTOS
+    ================================================= */
+
+    if (
+
+        texto.includes("dame 3 puntos") ||
+
+        texto.includes("hazme 3 puntos") ||
+
+        texto.includes("quiero 3 puntos") ||
+
+        texto.includes("tres puntos") ||
+
+        texto === "3 puntos"
+
+    ) {
+
+
+        if (!CHINO.contexto.tema) {
 
             return `
-📖 PRÉDICA: ${tema}
+🧠 Todavía no tengo registrado el tema.
 
-👥 Audiencia: ${audiencia}
+Primero dime:
 
-🔥 3 PUNTOS
+"Sobre David"
 
-Puedo preparar los puntos tomando en cuenta el tema y la audiencia.
-            `;
+por ejemplo.
+`;
+
         }
 
-        // =====================================
-        // DESARROLLAR UN PUNTO
-        // =====================================
+
+        const tema = normalizarTexto(
+            CHINO.contexto.tema
+        );
+
+
+        /* ---------------------------------------------
+           DAVID
+        --------------------------------------------- */
+
+        if (tema.includes("david")) {
+
+            CHINO.contexto.detalles = [
+
+                "David aprendió a confiar en Dios antes de enfrentar a Goliat.",
+
+                "David no permitió que las opiniones de otros definieran su identidad.",
+
+                "David aprendió a esperar el tiempo de Dios para cumplir su propósito."
+
+            ];
+
+
+            return `
+🔥 PRÉDICA: ${CHINO.contexto.tema.toUpperCase()}
+
+👥 Audiencia: ${
+                CHINO.contexto.audiencia || "General"
+            }
+
+
+1️⃣ David aprendió a confiar en Dios antes de enfrentar a Goliat.
+
+
+2️⃣ David no permitió que las opiniones de otros definieran su identidad.
+
+
+3️⃣ David aprendió a esperar el tiempo de Dios para cumplir su propósito.
+
+
+📌 Contexto conservado.
+
+Tema: ${CHINO.contexto.tema}
+
+Audiencia: ${
+                CHINO.contexto.audiencia || "General"
+            }
+
+Puedes decirme:
+
+"Desarrolla el punto 2"
+`;
+
+        }
+
+
+        /* ---------------------------------------------
+           TEMA GENERAL
+        --------------------------------------------- */
+
+        CHINO.contexto.detalles = [
+
+            `El primer principio que podemos aprender de ${CHINO.contexto.tema} es confiar en Dios.`,
+
+            `El segundo principio es mantener nuestra identidad y propósito en Dios.`,
+
+            `El tercer principio es aprender a esperar el tiempo de Dios.`
+
+        ];
+
+
+        return `
+🔥 PRÉDICA: ${CHINO.contexto.tema.toUpperCase()}
+
+👥 Audiencia: ${
+            CHINO.contexto.audiencia || "General"
+        }
+
+
+1️⃣ ${CHINO.contexto.detalles[0]}
+
+
+2️⃣ ${CHINO.contexto.detalles[1]}
+
+
+3️⃣ ${CHINO.contexto.detalles[2]}
+
+
+📌 Contexto conservado.
+
+Ahora puedes decir:
+
+"Desarrolla el punto 2"
+`;
+
+    }
+
+
+    /* =================================================
+       DESARROLLAR PUNTO
+    ================================================= */
+
+    if (
+
+        texto.includes("desarrolla el punto") ||
+
+        texto.includes("desarrollar el punto") ||
+
+        texto.includes("explica el punto")
+
+    ) {
+
+
+        let numeroPunto = null;
+
 
         if (
-            texto.includes("desarrolla el punto") ||
-            texto.includes("desarrollar el punto") ||
-            texto.includes("explica el punto")
+
+            texto.includes("punto 1") ||
+
+            texto.includes("punto uno")
+
         ) {
 
-            let numeroPunto = null;
+            numeroPunto = 1;
 
-            if (
-                texto.includes("punto 1") ||
-                texto.includes("punto uno")
-            ) {
-                numeroPunto = 1;
-            }
+        }
 
-            if (
-                texto.includes("punto 2") ||
-                texto.includes("punto dos")
-            ) {
-                numeroPunto = 2;
-            }
 
-            if (
-                texto.includes("punto 3") ||
-                texto.includes("punto tres")
-            ) {
-                numeroPunto = 3;
-            }
+        if (
 
-            if (
-                numeroPunto &&
-                CHINO.contexto.detalles &&
-                CHINO.contexto.detalles.length >= numeroPunto
-            ) {
+            texto.includes("punto 2") ||
 
-                const punto =
-                    CHINO.contexto.detalles[numeroPunto - 1];
+            texto.includes("punto dos")
 
-                return `
+        ) {
+
+            numeroPunto = 2;
+
+        }
+
+
+        if (
+
+            texto.includes("punto 3") ||
+
+            texto.includes("punto tres")
+
+        ) {
+
+            numeroPunto = 3;
+
+        }
+
+
+        if (
+
+            numeroPunto &&
+
+            CHINO.contexto.detalles.length >= numeroPunto
+
+        ) {
+
+            const punto =
+
+                CHINO.contexto.detalles[
+                    numeroPunto - 1
+                ];
+
+
+            return `
 📖 DESARROLLO DEL PUNTO ${numeroPunto}
 
-🎯 Tema: ${CHINO.contexto.tema}
 
-👥 Audiencia: ${CHINO.contexto.audiencia}
+🔥 Tema:
 
-🔥 Punto:
+${CHINO.contexto.tema}
+
+
+👥 Audiencia:
+
+${CHINO.contexto.audiencia || "General"}
+
+
+🎯 Punto:
 
 ${punto}
 
-🧠 CHINO reconoce que estás desarrollando este punto de tu prédica.
-                `;
-            }
 
-            return `
+🧠 CHINO reconoce que estás continuando con el contexto de tu prédica.
+
+
+Ahora podemos desarrollar este punto con:
+
+📖 Texto bíblico
+💡 Explicación
+🔥 Aplicación
+🎤 Ejemplo
+🙏 Conclusión
+`;
+
+        }
+
+
+        return `
 🧠 No encontré el punto que quieres desarrollar.
 
 Primero genera los 3 puntos de la prédica.
-            `;
-        }
 
-        // =====================================
-        // RESPUESTA NORMAL DE BIBLIA
-        // =====================================
+Por ejemplo:
 
-        return `
-📖 Módulo Biblia activado.
+"Dame 3 puntos"
 
-🧠 Contexto actual:
+y después:
 
-Proyecto: ${CHINO.contexto.proyecto || "ninguno"}
+"Desarrolla el punto 2"
+`;
 
-Tema: ${CHINO.contexto.tema || "ninguno"}
-
-Audiencia: ${CHINO.contexto.audiencia || "general"}
-
-Puedes seguir agregando instrucciones y conservaré este contexto.
-        `;
     }
 
-    // =====================================
-    // MÚSICA
-    // =====================================
 
-    if (modulo === "Música") {
+    /* =================================================
+       MÓDULO BIBLIA
+    ================================================= */
+
+    if (analisis.modulo === "Biblia") {
+
         return `
-🎸 Módulo Música activado.
+📖 MÓDULO BIBLIA ACTIVADO
 
-🧠 El administrador de contexto está activo.
+Puedo ayudarte a trabajar:
 
-Puedo trabajar con canciones, acordes, escalas, instrumentos y adoración.
-        `;
+• Prédicas
+• Estudios bíblicos
+• Versículos
+• Personajes bíblicos
+• Bosquejos
+• Aplicaciones
+• Enseñanzas
+
+¿Qué quieres preparar?
+`;
+
     }
 
-    // =====================================
-    // PODCAST
-    // =====================================
 
-    if (modulo === "Podcast") {
+    /* =================================================
+       MÓDULO MÚSICA
+    ================================================= */
+
+    if (analisis.modulo === "Música") {
+
         return `
-🎙️ Módulo Podcast activado.
+🎵 MÓDULO MÚSICA ACTIVADO
 
-🧠 El administrador de contexto está activo.
+Podemos trabajar:
 
-Puedo trabajar con guiones, preguntas, episodios e ideas para contenido.
-        `;
+🎸 Acordes
+🎹 Teclado
+🥁 Batería
+🎼 Escalas
+🎤 Adoración
+📚 Ejercicios
+
+Dime qué quieres aprender.
+`;
+
     }
 
-    // =====================================
-    // ASISTENTE
-    // =====================================
+
+    /* =================================================
+       MÓDULO PODCAST
+    ================================================= */
+
+    if (analisis.modulo === "Podcast") {
+
+        return `
+🎙️ MÓDULO PODCAST ACTIVADO
+
+Puedo ayudarte con:
+
+• Ideas
+• Guiones
+• Preguntas
+• Títulos
+• Estructura
+• Contenido
+
+¿Qué quieres preparar?
+`;
+
+    }
+
+
+    /* =================================================
+       RESPUESTA GENERAL
+    ================================================= */
 
     return `
-🤖 Soy CHINO AI ${CHINO.version}.
+🤖 Soy CHINO AI 3.0.
 
-🧠 Cerebro central: activo
-💾 Memoria: activa
-🎯 Contexto: activo
-🔄 Enrutamiento: activo
+Entendí tu mensaje:
 
-Estoy listo para trabajar contigo.
-    `;
-}
-    // =========================
-    // MÚSICA
-    // =========================
-    if (modulo === "Música") {
-        return `
-🎸 Módulo Música activado.
+"${mensaje}"
 
-🧠 El administrador de contexto está activo.
-Puedo trabajar con canciones, acordes, escalas, instrumentos y adoración.
-        `;
-    }
-
-    // =========================
-    // PODCAST
-    // =========================
-    if (modulo === "Podcast") {
-        return `
-🎙️ Módulo Podcast activado.
-
-🧠 El administrador de contexto está activo.
-Puedo trabajar con guiones, preguntas, episodios e ideas para contenido.
-        `;
-    }
-
-    // =========================
-    // ASISTENTE
-    // =========================
-    return `
-🤖 Soy CHINO AI ${CHINO.version}.
-
-🧠 Cerebro central: activo
-💾 Memoria: activa
-🎯 Contexto: activo
-🔄 Enrutamiento: activo
-
-Estoy listo para trabajar contigo.
-    `;
-}
-function mostrarMensajeUsuario(
-
-    mensaje
-
-) {
-
-    const chat =
-        document.getElementById(
-            "chat"
-        );
-
-
-    const mensajeSeguro =
-        escaparHTML(mensaje);
-
-
-    chat.innerHTML += `
-
-        <div class="message user">
-
-            👤 <strong>Tú:</strong>
-
-            ${mensajeSeguro}
-
-        </div>
-
-    `;
-
-
-    chat.scrollTop =
-        chat.scrollHeight;
+Mi cerebro central todavía está creciendo, pero ya puedo reconocer diferentes módulos y mantener el contexto de nuestras conversaciones.
+`;
 
 }
 
 
 /* =====================================================
-   MOSTRAR RESPUESTA
-   ===================================================== */
+   MOSTRAR MENSAJE DEL USUARIO
+===================================================== */
 
-function mostrarRespuesta(
+function mostrarMensajeUsuario(mensaje) {
 
-    respuesta
-
-) {
-
-    const chat =
-        document.getElementById(
-            "chat"
-        );
+    const chat = document.getElementById("chat");
 
 
-    chat.innerHTML += `
+    const elemento = document.createElement("div");
 
-        <div class="message jarvis">
-
-            🤖 <strong>CHINO:</strong>
-
-            ${respuesta}
-
-        </div>
-
-    `;
+    elemento.className = "message user";
 
 
-    chat.scrollTop =
-        chat.scrollHeight;
+    elemento.innerHTML =
+        "👤 <strong>Tú:</strong> ";
+
+
+    const texto = document.createTextNode(mensaje);
+
+    elemento.appendChild(texto);
+
+
+    chat.appendChild(elemento);
 
 }
 
 
 /* =====================================================
-   FUNCIÓN PRINCIPAL
-   ===================================================== */
+   MOSTRAR RESPUESTA DE CHINO
+===================================================== */
+
+function mostrarRespuesta(respuesta) {
+
+    const chat = document.getElementById("chat");
+
+
+    const elemento = document.createElement("div");
+
+    elemento.className = "message CHINO";
+
+
+    const titulo = document.createElement("strong");
+
+    titulo.textContent = "🤖 CHINO: ";
+
+
+    elemento.appendChild(titulo);
+
+
+    const texto = document.createTextNode(respuesta);
+
+    elemento.appendChild(texto);
+
+
+    chat.appendChild(elemento);
+
+
+    chat.scrollTop = chat.scrollHeight;
+
+}
+
+
+/* =====================================================
+   ENVIAR MENSAJE
+===================================================== */
 
 function enviarMensaje() {
 
+
     const input =
-        document.getElementById(
-            "userInput"
-        );
+        document.getElementById("userInput");
 
 
     const mensaje =
         input.value.trim();
 
 
-    if (
-
-        mensaje === ""
-
-    ) {
+    if (mensaje === "") {
 
         return;
 
     }
 
 
-    /* =========================
-       GUARDAR MENSAJE
-       ========================= */
+    /* GUARDAR MENSAJE */
 
     guardarMemoria(
-
         "usuario",
-
         mensaje
-
     );
 
 
-    /* =========================
-       MOSTRAR MENSAJE
-       ========================= */
+    /* MOSTRAR MENSAJE */
 
     mostrarMensajeUsuario(
-
         mensaje
-
     );
 
 
-    /* =========================
-       LIMPIAR INPUT
-       ========================= */
+    /* LIMPIAR ENTRADA */
 
     input.value = "";
 
 
-    /* =========================
-       PROCESAMIENTO
-       ========================= */
+    /* PROCESAMIENTO */
 
-    setTimeout(() => {
+    setTimeout(function() {
 
 
-        /* Analizar */
+        /* ANALIZAR */
 
-const analisis =
-    analizarIntencion(
-        mensaje
-    );
-
-CHINO.moduloActual = analisis.modulo;
-
-console.log(
-    "Análisis:",
-    analisis
-);
-
-/* Generar */
-
-const respuesta =
-    generarRespuesta(
-        mensaje,
-        analisis
-    );
-
-/* Guardar respuesta */
+        const analisis =
+            analizarIntencion(
+                mensaje
+            );
 
 
-        /* Guardar respuesta */
+        /* ACTUALIZAR MÓDULO */
 
-        guardarMemoria(
+        CHINO.moduloActual =
+            analisis.modulo;
 
-            "chino",
 
-            respuesta
-
+        console.log(
+            "Análisis:",
+            analisis
         );
 
 
-        /* Mostrar */
+        /* GENERAR */
+
+        const respuesta =
+            generarRespuesta(
+                mensaje,
+                analisis
+            );
+
+
+        /* GUARDAR RESPUESTA */
+
+        guardarMemoria(
+            "CHINO",
+            respuesta
+        );
+
+
+        /* MOSTRAR RESPUESTA */
 
         mostrarRespuesta(
-
             respuesta
-
         );
 
 
@@ -835,142 +1122,114 @@ const respuesta =
 
 
 /* =====================================================
-   ACTIVACIÓN MANUAL DE MÓDULOS
-   ===================================================== */
+   CAMBIAR MÓDULO
+===================================================== */
 
 function modulo(nombre) {
+
 
     CHINO.moduloActual =
         nombre;
 
 
+    const chat =
+        document.getElementById("chat");
+
+
     let respuesta = "";
 
 
-    if (
-
-        nombre === "Biblia"
-
-    ) {
+    if (nombre === "Biblia") {
 
         respuesta = `
+📖 Módulo Biblia activado.
 
-        📖 <strong>Módulo Biblia activado.</strong>
+Estoy listo para ayudarte con:
 
-        <br><br>
-
-        Estoy listo para trabajar
-        contigo en temas bíblicos.
-
-        `;
+Prédicas
+Estudios
+Versículos
+Personajes bíblicos
+Enseñanzas
+`;
 
     }
 
 
-    if (
-
-        nombre === "Música"
-
-    ) {
+    if (nombre === "Música") {
 
         respuesta = `
+🎵 Módulo Música activado.
 
-        🎵 <strong>Módulo Música activado.</strong>
+Estoy listo para trabajar:
 
-        <br><br>
-
-        Estoy listo para ayudarte
-        con música, acordes y adoración.
-
-        `;
+Acordes
+Escalas
+Guitarra
+Teclado
+Batería
+Adoración
+`;
 
     }
 
 
-    if (
-
-        nombre === "Podcast"
-
-    ) {
+    if (nombre === "Podcast") {
 
         respuesta = `
+🎙️ Módulo Podcast activado.
 
-        🎙️ <strong>Módulo Podcast activado.</strong>
+Estoy listo para trabajar:
 
-        <br><br>
-
-        Estoy listo para ayudarte
-        con contenido y producción
-        de podcast.
-
-        `;
+Ideas
+Guiones
+Preguntas
+Títulos
+Contenido
+`;
 
     }
 
 
-    if (
-
-        nombre === "Asistente"
-
-    ) {
+    if (nombre === "Asistente") {
 
         respuesta = `
+🧠 Asistente central activado.
 
-        🧠 <strong>Cerebro central activado.</strong>
-
-        <br><br>
-
-        Memoria de conversación:
-        <strong>ACTIVA</strong>
-
-        `;
+CHINO está listo para coordinar tus tareas.
+`;
 
     }
 
 
     mostrarRespuesta(
-
         respuesta
-
     );
 
 
     guardarMemoria(
-
-        "chino",
-
+        "CHINO",
         respuesta
-
     );
 
 }
 
 
 /* =====================================================
-   INICIALIZACIÓN
-   ===================================================== */
+   INICIO
+===================================================== */
 
 console.log(
-    "================================="
+    "CHINO AI 3.0 iniciado correctamente."
 );
 
 console.log(
-    "CHINO AI 3.0"
+    "Módulo actual:",
+    CHINO.moduloActual
 );
 
-console.log(
-    "Cerebro central: ACTIVO"
-);
+</script>
 
-console.log(
-    "Memoria V1: ACTIVA"
-);
-
-console.log(
-    "================================="
-);
-
-</script>   
-  
 </body>
+
 </html>
