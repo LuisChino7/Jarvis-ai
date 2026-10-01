@@ -141,16 +141,16 @@
     <button class="module" onclick="modulo('Asistente')">🧠 Asistente</button>
   </div>
 
-  <script>
+   <script>
 
 /* =====================================================
    CHINO AI 3.0
-   CEREBRO CENTRAL - ROUTER DE INTENCIONES
+   CEREBRO CENTRAL + MEMORIA V1
    ===================================================== */
 
 
 /* =====================================================
-   CONFIGURACIÓN PRINCIPAL
+   CONFIGURACIÓN
    ===================================================== */
 
 const CHINO = {
@@ -166,6 +166,77 @@ const CHINO = {
     estado: "activo"
 
 };
+
+
+/* =====================================================
+   MEMORIA DE CONVERSACIÓN
+   ===================================================== */
+
+let memoriaConversacion = [];
+
+
+/*
+   Guarda un mensaje en la memoria
+*/
+
+function guardarMemoria(rol, mensaje) {
+
+    memoriaConversacion.push({
+
+        rol: rol,
+
+        mensaje: mensaje,
+
+        fecha: new Date().toISOString()
+
+    });
+
+
+    /*
+       Evitamos que la memoria crezca
+       indefinidamente.
+    */
+
+    if (memoriaConversacion.length > 30) {
+
+        memoriaConversacion.shift();
+
+    }
+
+
+    console.log(
+        "🧠 Memoria actual:",
+        memoriaConversacion
+    );
+
+}
+
+
+/*
+   Obtiene los últimos mensajes
+*/
+
+function obtenerMemoria() {
+
+    return memoriaConversacion
+        .slice(-10);
+
+}
+
+
+/*
+   Limpia la memoria
+*/
+
+function limpiarMemoria() {
+
+    memoriaConversacion = [];
+
+    console.log(
+        "🧠 Memoria de CHINO limpiada."
+    );
+
+}
 
 
 /* =====================================================
@@ -203,11 +274,12 @@ function analizarIntencion(mensaje) {
     const texto = limpiarTexto(mensaje);
 
 
-    /* -------------------------
+    /* =========================
        SALUDOS
-       ------------------------- */
+       ========================= */
 
     const saludos = [
+
         "hola",
         "hey",
         "buenas",
@@ -216,27 +288,40 @@ function analizarIntencion(mensaje) {
         "buenas noches",
         "que onda",
         "que tal"
+
     ];
 
+
     if (
+
         saludos.some(palabra =>
+
             texto === palabra ||
-            texto.startsWith(palabra + " ")
+
+            texto.startsWith(
+                palabra + " "
+            )
+
         )
+
     ) {
 
         return {
+
             modulo: "Asistente",
+
             intencion: "saludo",
+
             confianza: 1
+
         };
 
     }
 
 
-    /* -------------------------
+    /* =========================
        BIBLIA
-       ------------------------- */
+       ========================= */
 
     const palabrasBiblia = [
 
@@ -253,7 +338,6 @@ function analizarIntencion(mensaje) {
         "estudio biblico",
         "estudio de biblia",
         "capitulo",
-        "versiculo",
         "evangelio",
         "jesus",
         "dios",
@@ -266,26 +350,36 @@ function analizarIntencion(mensaje) {
         "texto biblico",
         "ensenanza biblica",
         "ensenanza cristiana"
+
     ];
 
+
     if (
+
         palabrasBiblia.some(palabra =>
+
             texto.includes(palabra)
+
         )
+
     ) {
 
         return {
+
             modulo: "Biblia",
+
             intencion: "biblia",
+
             confianza: 0.95
+
         };
 
     }
 
 
-    /* -------------------------
+    /* =========================
        MÚSICA
-       ------------------------- */
+       ========================= */
 
     const palabrasMusica = [
 
@@ -307,34 +401,44 @@ function analizarIntencion(mensaje) {
         "ritmos",
         "tonalidad",
         "tonalidades",
-        "transpose",
         "transponer",
+        "transposicion",
         "adoracion",
         "alabanza",
         "worship",
         "ensayo",
         "musico",
         "musicos"
+
     ];
 
+
     if (
+
         palabrasMusica.some(palabra =>
+
             texto.includes(palabra)
+
         )
+
     ) {
 
         return {
+
             modulo: "Música",
+
             intencion: "musica",
+
             confianza: 0.95
+
         };
 
     }
 
 
-    /* -------------------------
+    /* =========================
        PODCAST
-       ------------------------- */
+       ========================= */
 
     const palabrasPodcast = [
 
@@ -353,26 +457,36 @@ function analizarIntencion(mensaje) {
         "grabacion",
         "contenido para podcast",
         "nombre para podcast"
+
     ];
 
+
     if (
+
         palabrasPodcast.some(palabra =>
+
             texto.includes(palabra)
+
         )
+
     ) {
 
         return {
+
             modulo: "Podcast",
+
             intencion: "podcast",
+
             confianza: 0.95
+
         };
 
     }
 
 
-    /* -------------------------
+    /* =========================
        ASISTENTE
-       ------------------------- */
+       ========================= */
 
     const palabrasAsistente = [
 
@@ -394,31 +508,75 @@ function analizarIntencion(mensaje) {
         "planes",
         "idea",
         "ideas"
+
     ];
 
+
     if (
+
         palabrasAsistente.some(palabra =>
+
             texto.includes(palabra)
+
         )
+
     ) {
 
         return {
+
             modulo: "Asistente",
+
             intencion: "asistente",
+
             confianza: 0.85
+
         };
 
     }
 
 
-    /* -------------------------
+    /* =========================
+       CONTEXTO
+       ========================= */
+
+    const memoria = obtenerMemoria();
+
+
+    if (memoria.length > 0) {
+
+        const ultimoModulo =
+            CHINO.moduloActual;
+
+
+        /*
+           Si el usuario continúa una
+           conversación, mantenemos el
+           módulo actual.
+        */
+
+        return {
+
+            modulo: ultimoModulo,
+
+            intencion: "continuacion",
+
+            confianza: 0.70
+
+        };
+
+    }
+
+
+    /* =========================
        DESCONOCIDO
-       ------------------------- */
+       ========================= */
 
     return {
 
         modulo: "Asistente",
+
         intencion: "general",
+
         confianza: 0.30
 
     };
@@ -427,117 +585,224 @@ function analizarIntencion(mensaje) {
 
 
 /* =====================================================
-   RESPUESTAS DEL CEREBRO
+   GENERADOR DE RESPUESTAS
    ===================================================== */
 
-function generarRespuesta(mensaje, analisis) {
+function generarRespuesta(
 
-    const modulo = analisis.modulo;
+    mensaje,
 
-    const intencion = analisis.intencion;
+    analisis
+
+) {
+
+    const modulo =
+        analisis.modulo;
 
 
-    /* -------------------------
+    const intencion =
+        analisis.intencion;
+
+
+    /* =========================
        SALUDO
-       ------------------------- */
+       ========================= */
 
-    if (intencion === "saludo") {
+    if (
 
-        return "Hola bro. 😎 Soy CHINO AI 3.0. Mi cerebro central está activo. ¿Qué vamos a construir hoy?";
+        intencion === "saludo"
+
+    ) {
+
+        return `
+
+        Hola bro. 😎
+
+        Soy CHINO AI 3.0.
+
+        🧠 Cerebro central activo.
+        💾 Memoria de conversación activa.
+
+        ¿Qué vamos a construir hoy?
+
+        `;
 
     }
 
 
-    /* -------------------------
+    /* =========================
        BIBLIA
-       ------------------------- */
+       ========================= */
 
-    if (modulo === "Biblia") {
+    if (
 
-        CHINO.moduloActual = "Biblia";
+        modulo === "Biblia"
+
+    ) {
+
+        CHINO.moduloActual =
+            "Biblia";
+
 
         return `
-        📖 <strong>Módulo Biblia activado.</strong><br><br>
 
-        Entendí que tu solicitud está relacionada con la Biblia.
-        Puedo ayudarte a trabajar en estudios bíblicos,
-        prédicas, devocionales, versículos, personajes,
-        temas y enseñanzas.
+        📖 <strong>Módulo Biblia activado.</strong>
+
+        <br><br>
+
+        Entendí que tu solicitud está
+        relacionada con la Biblia.
+
+        <br><br>
+
+        La memoria de CHINO está
+        conservando nuestra conversación
+        para mantener el contexto.
+
         `;
 
     }
 
 
-    /* -------------------------
+    /* =========================
        MÚSICA
-       ------------------------- */
+       ========================= */
 
-    if (modulo === "Música") {
+    if (
 
-        CHINO.moduloActual = "Música";
+        modulo === "Música"
+
+    ) {
+
+        CHINO.moduloActual =
+            "Música";
+
 
         return `
-        🎵 <strong>Módulo Música activado.</strong><br><br>
 
-        Entendí que estás trabajando con música.
-        Podemos desarrollar acordes, escalas,
-        ejercicios, instrumentos, ritmos,
-        alabanza y adoración.
+        🎵 <strong>Módulo Música activado.</strong>
+
+        <br><br>
+
+        Entendí que estás trabajando
+        con música.
+
+        <br><br>
+
+        CHINO conservará el contexto
+        de nuestra conversación.
+
         `;
 
     }
 
 
-    /* -------------------------
+    /* =========================
        PODCAST
-       ------------------------- */
+       ========================= */
 
-    if (modulo === "Podcast") {
+    if (
 
-        CHINO.moduloActual = "Podcast";
+        modulo === "Podcast"
+
+    ) {
+
+        CHINO.moduloActual =
+            "Podcast";
+
 
         return `
-        🎙️ <strong>Módulo Podcast activado.</strong><br><br>
 
-        Entendí que estás trabajando en contenido
-        para podcast. Podemos desarrollar temas,
-        preguntas, guiones, episodios e ideas.
+        🎙️ <strong>Módulo Podcast activado.</strong>
+
+        <br><br>
+
+        Entendí que estás trabajando
+        en contenido para podcast.
+
+        <br><br>
+
+        La conversación queda guardada
+        en la memoria temporal de CHINO.
+
         `;
 
     }
 
 
-    /* -------------------------
+    /* =========================
+       CONTINUACIÓN
+       ========================= */
+
+    if (
+
+        intencion === "continuacion"
+
+    ) {
+
+        return `
+
+        🧠 <strong>CHINO recuerda el contexto.</strong>
+
+        <br><br>
+
+        Seguimos trabajando en el módulo:
+
+        <strong>${CHINO.moduloActual}</strong>
+
+        <br><br>
+
+        Tu nuevo mensaje fue:
+
+        "${escaparHTML(mensaje)}"
+
+        `;
+
+    }
+
+
+    /* =========================
        ASISTENTE
-       ------------------------- */
+       ========================= */
 
-    if (modulo === "Asistente") {
+    if (
 
-        CHINO.moduloActual = "Asistente";
+        modulo === "Asistente"
 
+    ) {
 
-        if (intencion === "asistente") {
-
-            return `
-            🧠 <strong>Asistente central activado.</strong><br><br>
-
-            Soy CHINO AI 3.0.
-            Mi función es coordinar los diferentes módulos
-            y ayudarte a decidir qué sistema debe encargarse
-            de cada solicitud.
-            `;
-
-        }
+        CHINO.moduloActual =
+            "Asistente";
 
 
         return `
-        🤖 <strong>CHINO:</strong><br><br>
 
-        Recibí tu mensaje, pero todavía no tengo suficiente
-        información para dirigirlo a un módulo específico.
+        🤖 <strong>Asistente central activado.</strong>
 
-        Puedes pedirme algo relacionado con Biblia,
-        Música, Podcast o Asistente.
+        <br><br>
+
+        Soy CHINO AI 3.0.
+
+        <br><br>
+
+        🧠 Cerebro central: ACTIVO
+
+        <br>
+
+        💾 Memoria: ACTIVA
+
+        <br>
+
+        📖 Biblia: CONECTADA
+
+        <br>
+
+        🎵 Música: CONECTADA
+
+        <br>
+
+        🎙️ Podcast: CONECTADO
+
         `;
 
     }
@@ -549,45 +814,75 @@ function generarRespuesta(mensaje, analisis) {
 
 
 /* =====================================================
-   MOSTRAR MENSAJES
+   MOSTRAR MENSAJE DEL USUARIO
    ===================================================== */
 
-function mostrarMensajeUsuario(mensaje) {
+function mostrarMensajeUsuario(
 
-    const chat = document.getElementById("chat");
+    mensaje
 
-    const mensajeSeguro = escaparHTML(mensaje);
+) {
+
+    const chat =
+        document.getElementById(
+            "chat"
+        );
+
+
+    const mensajeSeguro =
+        escaparHTML(mensaje);
+
 
     chat.innerHTML += `
 
         <div class="message user">
 
-            👤 <strong>Tú:</strong> ${mensajeSeguro}
+            👤 <strong>Tú:</strong>
+
+            ${mensajeSeguro}
 
         </div>
 
     `;
 
-    chat.scrollTop = chat.scrollHeight;
+
+    chat.scrollTop =
+        chat.scrollHeight;
 
 }
 
 
-function mostrarRespuesta(respuesta) {
+/* =====================================================
+   MOSTRAR RESPUESTA
+   ===================================================== */
 
-    const chat = document.getElementById("chat");
+function mostrarRespuesta(
+
+    respuesta
+
+) {
+
+    const chat =
+        document.getElementById(
+            "chat"
+        );
+
 
     chat.innerHTML += `
 
         <div class="message jarvis">
 
-            🤖 <strong>CHINO:</strong> ${respuesta}
+            🤖 <strong>CHINO:</strong>
+
+            ${respuesta}
 
         </div>
 
     `;
 
-    chat.scrollTop = chat.scrollHeight;
+
+    chat.scrollTop =
+        chat.scrollHeight;
 
 }
 
@@ -598,52 +893,111 @@ function mostrarRespuesta(respuesta) {
 
 function enviarMensaje() {
 
-    const input = document.getElementById("userInput");
-
-    const mensaje = input.value.trim();
-
-
-    if (mensaje === "") return;
+    const input =
+        document.getElementById(
+            "userInput"
+        );
 
 
-    /* Mostrar mensaje */
+    const mensaje =
+        input.value.trim();
 
-    mostrarMensajeUsuario(mensaje);
+
+    if (
+
+        mensaje === ""
+
+    ) {
+
+        return;
+
+    }
 
 
-    /* Limpiar entrada */
+    /* =========================
+       GUARDAR MENSAJE
+       ========================= */
+
+    guardarMemoria(
+
+        "usuario",
+
+        mensaje
+
+    );
+
+
+    /* =========================
+       MOSTRAR MENSAJE
+       ========================= */
+
+    mostrarMensajeUsuario(
+
+        mensaje
+
+    );
+
+
+    /* =========================
+       LIMPIAR INPUT
+       ========================= */
 
     input.value = "";
 
 
-    /* Pensamiento del cerebro */
+    /* =========================
+       PROCESAMIENTO
+       ========================= */
 
     setTimeout(() => {
 
 
-        /* Analizar intención */
+        /* Analizar */
 
-        const analisis = analizarIntencion(mensaje);
-
-
-        console.log(
-            "🧠 CHINO AI - Análisis:",
-            analisis
-        );
-
-
-        /* Generar respuesta */
-
-        const respuesta =
-            generarRespuesta(
-                mensaje,
-                analisis
+        const analisis =
+            analizarIntencion(
+                mensaje
             );
 
 
-        /* Mostrar respuesta */
+        console.log(
 
-        mostrarRespuesta(respuesta);
+            "🧠 Análisis:",
+            analisis
+
+        );
+
+
+        /* Generar */
+
+        const respuesta =
+            generarRespuesta(
+
+                mensaje,
+
+                analisis
+
+            );
+
+
+        /* Guardar respuesta */
+
+        guardarMemoria(
+
+            "chino",
+
+            respuesta
+
+        );
+
+
+        /* Mostrar */
+
+        mostrarRespuesta(
+
+            respuesta
+
+        );
 
 
     }, 500);
@@ -657,97 +1011,108 @@ function enviarMensaje() {
 
 function modulo(nombre) {
 
-    const chat = document.getElementById("chat");
+    CHINO.moduloActual =
+        nombre;
+
 
     let respuesta = "";
 
 
-    /* -------------------------
-       BIBLIA
-       ------------------------- */
+    if (
 
-    if (nombre === "Biblia") {
+        nombre === "Biblia"
 
-        CHINO.moduloActual = "Biblia";
+    ) {
 
         respuesta = `
-        📖 <strong>Módulo Biblia activado.</strong><br><br>
 
-        Estoy listo para ayudarte con estudios,
-        versículos, prédicas y enseñanzas.
+        📖 <strong>Módulo Biblia activado.</strong>
+
+        <br><br>
+
+        Estoy listo para trabajar
+        contigo en temas bíblicos.
+
         `;
 
     }
 
 
-    /* -------------------------
-       MÚSICA
-       ------------------------- */
+    if (
 
-    if (nombre === "Música") {
+        nombre === "Música"
 
-        CHINO.moduloActual = "Música";
+    ) {
 
         respuesta = `
-        🎵 <strong>Módulo Música activado.</strong><br><br>
 
-        Estoy listo para ayudarte con acordes,
-        escalas, ejercicios, instrumentos,
-        alabanza y adoración.
+        🎵 <strong>Módulo Música activado.</strong>
+
+        <br><br>
+
+        Estoy listo para ayudarte
+        con música, acordes y adoración.
+
         `;
 
     }
 
 
-    /* -------------------------
-       PODCAST
-       ------------------------- */
+    if (
 
-    if (nombre === "Podcast") {
+        nombre === "Podcast"
 
-        CHINO.moduloActual = "Podcast";
+    ) {
 
         respuesta = `
-        🎙️ <strong>Módulo Podcast activado.</strong><br><br>
 
-        Estoy listo para ayudarte con ideas,
-        guiones, preguntas y contenido.
+        🎙️ <strong>Módulo Podcast activado.</strong>
+
+        <br><br>
+
+        Estoy listo para ayudarte
+        con contenido y producción
+        de podcast.
+
         `;
 
     }
 
 
-    /* -------------------------
-       ASISTENTE
-       ------------------------- */
+    if (
 
-    if (nombre === "Asistente") {
+        nombre === "Asistente"
 
-        CHINO.moduloActual = "Asistente";
+    ) {
 
         respuesta = `
-        🧠 <strong>Cerebro central activado.</strong><br><br>
 
-        Soy el centro de CHINO AI.
-        Estoy preparado para dirigir tus solicitudes
-        al módulo correspondiente.
+        🧠 <strong>Cerebro central activado.</strong>
+
+        <br><br>
+
+        Memoria de conversación:
+        <strong>ACTIVA</strong>
+
         `;
 
     }
 
 
-    chat.innerHTML += `
+    mostrarRespuesta(
 
-        <div class="message jarvis">
+        respuesta
 
-            🤖 <strong>CHINO:</strong> ${respuesta}
-
-        </div>
-
-    `;
+    );
 
 
-    chat.scrollTop = chat.scrollHeight;
+    guardarMemoria(
+
+        "chino",
+
+        respuesta
+
+    );
 
 }
 
@@ -756,14 +1121,27 @@ function modulo(nombre) {
    INICIALIZACIÓN
    ===================================================== */
 
-console.log("=================================");
-console.log("CHINO AI 3.0");
-console.log("Cerebro central iniciado");
-console.log("Estado:", CHINO.estado);
-console.log("Módulo:", CHINO.moduloActual);
-console.log("=================================");
+console.log(
+    "================================="
+);
 
-  </script>
+console.log(
+    "CHINO AI 3.0"
+);
 
+console.log(
+    "Cerebro central: ACTIVO"
+);
+
+console.log(
+    "Memoria V1: ACTIVA"
+);
+
+console.log(
+    "================================="
+);
+
+</script>   
+  
 </body>
 </html>
