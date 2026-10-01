@@ -442,7 +442,11 @@ function generarRespuesta(mensaje, analisis) {
     const audiencia = CHINO.contexto.audiencia || "general";
 
     if (tema.toLowerCase().includes("david")) {
-
+CHINO.contexto.detalles = [
+    "David aprendió a confiar en Dios antes de enfrentar a Goliat.",
+    "David no permitió que las opiniones de otros definieran su identidad.",
+    "David aprendió a esperar el tiempo de Dios para cumplir su propósito."
+];
         return `
 📖 PRÉDICA: DAVID
 
