@@ -280,203 +280,123 @@ function escaparHTML(texto) {
 /* =====================================================
    CEREBRO CENTRAL
    ===================================================== */
-
 function analizarIntencion(mensaje) {
-
     const texto = limpiarTexto(mensaje);
 
-    /* =========================
-       CONTINUACIÓN DE CONTEXTO
-       ========================= */
+    // =====================================
+    // CONTINUACIONES DEL CONTEXTO ACTUAL
+    // =====================================
 
-    const frasesContinuacion = [
-        "sobre ",
-        "que sea ",
-        "para jovenes",
-        "para jovenes",
-        "que dure ",
-        "dame ",
-        "hazlo ",
-        "quiero que ",
-        "tambien ",
-        "ademas ",
-        "agrega ",
-        "ponle ",
-        "con ",
-        "y que ",
-        "ahora "
-    ];
+    const esContinuacion =
+        texto.startsWith("sobre ") ||
+        texto.startsWith("acerca de ") ||
+        texto.startsWith("para ") ||
+        texto.includes("dame 3 puntos") ||
+        texto.includes("3 puntos") ||
+        texto.includes("tres puntos") ||
+        texto.includes("hazme 3 puntos") ||
+        texto.includes("quiero 3 puntos") ||
+        texto.includes("agrega ") ||
+        texto.includes("tambien ") ||
+        texto.includes("ahora ") ||
+        texto.includes("que sea ") ||
+        texto.includes("dame ") ||
+        texto.includes("hazlo ");
 
     if (
-        CHINO.moduloActual !== "Asistente" &&
-        frasesContinuacion.some(frase =>
-            texto.startsWith(frase)
-        )
+        esContinuacion &&
+        CHINO.moduloActual !== "Asistente"
     ) {
-
         return {
-
             modulo: CHINO.moduloActual,
-
             intencion: "continuacion",
-
             confianza: 0.95
-
         };
-
     }
 
-
-    /* =========================
-       BIBLIA
-       ========================= */
-
-    const palabrasBiblia = [
-
-        "biblia",
-        "versiculo",
-        "versiculos",
-        "pasaje",
-        "pasajes",
-        "predica",
-        "predicar",
-        "predicacion",
-        "sermon",
-        "sermones",
-        "estudio biblico",
-        "capitulo",
-        "evangelio",
-        "jesus",
-        "dios",
-        "apostol",
-        "apostoles",
-        "oracion",
-        "orar",
-        "devocional",
-        "texto biblico",
-        "ensenanza biblica"
-
-    ];
+    // =====================================
+    // BIBLIA
+    // =====================================
 
     if (
-        palabrasBiblia.some(palabra =>
-            texto.includes(palabra)
-        )
+        texto.includes("biblia") ||
+        texto.includes("versiculo") ||
+        texto.includes("versiculo") ||
+        texto.includes("predica") ||
+        texto.includes("predicar") ||
+        texto.includes("sermon") ||
+        texto.includes("estudio biblico") ||
+        texto.includes("capitulo") ||
+        texto.includes("evangelio") ||
+        texto.includes("jesus") ||
+        texto.includes("dios") ||
+        texto.includes("oracion") ||
+        texto.includes("devocional")
     ) {
-
         return {
-
             modulo: "Biblia",
-
             intencion: "biblia",
-
             confianza: 0.95
-
         };
-
     }
 
-
-    /* =========================
-       MÚSICA
-       ========================= */
-
-    const palabrasMusica = [
-
-        "musica",
-        "cancion",
-        "canciones",
-        "acorde",
-        "acordes",
-        "guitarra",
-        "teclado",
-        "piano",
-        "bateria",
-        "bajo",
-        "escala",
-        "escalas",
-        "ritmo",
-        "tonalidad",
-        "adoracion",
-        "alabanza",
-        "worship",
-        "musico",
-        "musicos"
-
-    ];
+    // =====================================
+    // MÚSICA
+    // =====================================
 
     if (
-        palabrasMusica.some(palabra =>
-            texto.includes(palabra)
-        )
+        texto.includes("musica") ||
+        texto.includes("cancion") ||
+        texto.includes("acorde") ||
+        texto.includes("guitarra") ||
+        texto.includes("teclado") ||
+        texto.includes("piano") ||
+        texto.includes("bateria") ||
+        texto.includes("bajo") ||
+        texto.includes("escala") ||
+        texto.includes("ritmo") ||
+        texto.includes("tonalidad") ||
+        texto.includes("adoracion") ||
+        texto.includes("alabanza") ||
+        texto.includes("worship")
     ) {
-
         return {
-
             modulo: "Música",
-
             intencion: "musica",
-
             confianza: 0.95
-
         };
-
     }
 
-
-    /* =========================
-       PODCAST
-       ========================= */
-
-    const palabrasPodcast = [
-
-        "podcast",
-        "episodio",
-        "episodios",
-        "guion",
-        "guiones",
-        "entrevista",
-        "entrevistas",
-        "invitado",
-        "invitados",
-        "grabacion"
-
-    ];
+    // =====================================
+    // PODCAST
+    // =====================================
 
     if (
-        palabrasPodcast.some(palabra =>
-            texto.includes(palabra)
-        )
+        texto.includes("podcast") ||
+        texto.includes("episodio") ||
+        texto.includes("guion") ||
+        texto.includes("entrevista") ||
+        texto.includes("invitado") ||
+        texto.includes("grabacion")
     ) {
-
         return {
-
             modulo: "Podcast",
-
             intencion: "podcast",
-
             confianza: 0.95
-
         };
-
     }
 
-
-    /* =========================
-       ASISTENTE
-       ========================= */
+    // =====================================
+    // ASISTENTE
+    // =====================================
 
     return {
-
         modulo: "Asistente",
-
-        intencion: "general",
-
-        confianza: 0.30
-
+        intencion: "asistente",
+        confianza: 0.70
     };
-
 }
+
 function generarRespuesta(mensaje, analisis) {
     const texto = limpiarTexto(mensaje);
     const modulo = analisis.modulo;
