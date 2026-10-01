@@ -399,13 +399,15 @@ function analizarIntencion(mensaje) {
 }
 
 function generarRespuesta(mensaje, analisis) {
+
     const texto = limpiarTexto(mensaje);
     const modulo = analisis.modulo;
     const intencion = analisis.intencion;
 
-    // =========================
+    // =====================================
     // CONTEXTO BÍBLICO
-    // =========================
+    // =====================================
+
     if (modulo === "Biblia") {
 
         // Crear proyecto de prédica
@@ -432,23 +434,28 @@ function generarRespuesta(mensaje, analisis) {
             CHINO.contexto.audiencia = "jóvenes";
         }
 
-        // Detectar solicitud de puntos
+        // =====================================
+        // GENERAR 3 PUNTOS
+        // =====================================
+
         if (
-    texto.includes("dame 3 puntos") ||
-    texto.includes("3 puntos") ||
-    texto.includes("tres puntos")
-) {
+            texto.includes("dame 3 puntos") ||
+            texto.includes("3 puntos") ||
+            texto.includes("tres puntos")
+        ) {
 
-    const tema = CHINO.contexto.tema || "el tema indicado";
-    const audiencia = CHINO.contexto.audiencia || "general";
+            const tema = CHINO.contexto.tema || "el tema indicado";
+            const audiencia = CHINO.contexto.audiencia || "general";
 
-    if (tema.toLowerCase().includes("david")) {
-CHINO.contexto.detalles = [
-    "David aprendió a confiar en Dios antes de enfrentar a Goliat.",
-    "David no permitió que las opiniones de otros definieran su identidad.",
-    "David aprendió a esperar el tiempo de Dios para cumplir su propósito."
-];
-        return `
+            if (tema.toLowerCase().includes("david")) {
+
+                CHINO.contexto.detalles = [
+                    "David aprendió a confiar en Dios antes de enfrentar a Goliat.",
+                    "David no permitió que las opiniones de otros definieran su identidad.",
+                    "David aprendió a esperar el tiempo de Dios para cumplir su propósito."
+                ];
+
+                return `
 📖 PRÉDICA: DAVID
 
 👥 Audiencia: ${audiencia}
@@ -464,10 +471,10 @@ CHINO.contexto.detalles = [
 🧠 Contexto conservado:
 Tema: ${tema}
 Audiencia: ${audiencia}
-        `;
-    }
+                `;
+            }
 
-    return `
+            return `
 📖 PRÉDICA: ${tema}
 
 👥 Audiencia: ${audiencia}
@@ -475,53 +482,52 @@ Audiencia: ${audiencia}
 🔥 3 PUNTOS
 
 Puedo preparar los puntos tomando en cuenta el tema y la audiencia.
-    `;
-}
+            `;
+        }
 
-        return `
-📖 Módulo Biblia activado.
+        // =====================================
+        // DESARROLLAR UN PUNTO
+        // =====================================
 
-🧠 Contexto actual:
-Proyecto: ${CHINO.contexto.proyecto || "ninguno"}
-Tema: ${CHINO.contexto.tema || "ninguno"}
-Audiencia: ${CHINO.contexto.audiencia || "general"}
+        if (
+            texto.includes("desarrolla el punto") ||
+            texto.includes("desarrollar el punto") ||
+            texto.includes("explica el punto")
+        ) {
 
-Puedes seguir agregando instrucciones y conservaré este contexto.
-        `;
-    }
-// =====================================
-// DESARROLLAR UN PUNTO
-// =====================================
+            let numeroPunto = null;
 
-if (
-    texto.includes("desarrolla el punto") ||
-    texto.includes("desarrollar el punto") ||
-    texto.includes("explica el punto")
-) {
+            if (
+                texto.includes("punto 1") ||
+                texto.includes("punto uno")
+            ) {
+                numeroPunto = 1;
+            }
 
-    let numeroPunto = null;
+            if (
+                texto.includes("punto 2") ||
+                texto.includes("punto dos")
+            ) {
+                numeroPunto = 2;
+            }
 
-    if (texto.includes("punto 1") || texto.includes("punto uno")) {
-        numeroPunto = 1;
-    }
+            if (
+                texto.includes("punto 3") ||
+                texto.includes("punto tres")
+            ) {
+                numeroPunto = 3;
+            }
 
-    if (texto.includes("punto 2") || texto.includes("punto dos")) {
-        numeroPunto = 2;
-    }
+            if (
+                numeroPunto &&
+                CHINO.contexto.detalles &&
+                CHINO.contexto.detalles.length >= numeroPunto
+            ) {
 
-    if (texto.includes("punto 3") || texto.includes("punto tres")) {
-        numeroPunto = 3;
-    }
+                const punto =
+                    CHINO.contexto.detalles[numeroPunto - 1];
 
-    if (
-        numeroPunto &&
-        CHINO.contexto.detalles &&
-        CHINO.contexto.detalles.length >= numeroPunto
-    ) {
-
-        const punto = CHINO.contexto.detalles[numeroPunto - 1];
-
-        return `
+                return `
 📖 DESARROLLO DEL PUNTO ${numeroPunto}
 
 🎯 Tema: ${CHINO.contexto.tema}
@@ -529,15 +535,80 @@ if (
 👥 Audiencia: ${CHINO.contexto.audiencia}
 
 🔥 Punto:
+
 ${punto}
 
 🧠 CHINO reconoce que estás desarrollando este punto de tu prédica.
+                `;
+            }
+
+            return `
+🧠 No encontré el punto que quieres desarrollar.
+
+Primero genera los 3 puntos de la prédica.
+            `;
+        }
+
+        // =====================================
+        // RESPUESTA NORMAL DE BIBLIA
+        // =====================================
+
+        return `
+📖 Módulo Biblia activado.
+
+🧠 Contexto actual:
+
+Proyecto: ${CHINO.contexto.proyecto || "ninguno"}
+
+Tema: ${CHINO.contexto.tema || "ninguno"}
+
+Audiencia: ${CHINO.contexto.audiencia || "general"}
+
+Puedes seguir agregando instrucciones y conservaré este contexto.
         `;
     }
 
+    // =====================================
+    // MÚSICA
+    // =====================================
+
+    if (modulo === "Música") {
+        return `
+🎸 Módulo Música activado.
+
+🧠 El administrador de contexto está activo.
+
+Puedo trabajar con canciones, acordes, escalas, instrumentos y adoración.
+        `;
+    }
+
+    // =====================================
+    // PODCAST
+    // =====================================
+
+    if (modulo === "Podcast") {
+        return `
+🎙️ Módulo Podcast activado.
+
+🧠 El administrador de contexto está activo.
+
+Puedo trabajar con guiones, preguntas, episodios e ideas para contenido.
+        `;
+    }
+
+    // =====================================
+    // ASISTENTE
+    // =====================================
+
     return `
-🧠 No encontré el punto que quieres desarrollar.
-Primero genera los 3 puntos de la prédica.
+🤖 Soy CHINO AI ${CHINO.version}.
+
+🧠 Cerebro central: activo
+💾 Memoria: activa
+🎯 Contexto: activo
+🔄 Enrutamiento: activo
+
+Estoy listo para trabajar contigo.
     `;
 }
     // =========================
