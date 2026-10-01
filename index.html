@@ -163,7 +163,19 @@ const CHINO = {
 
     moduloActual: "Asistente",
 
-    estado: "activo"
+    estado: "activo",
+
+    contexto: {
+
+        proyecto: null,
+
+        tema: null,
+
+        audiencia: null,
+
+        detalles: []
+
+    }
 
 };
 
@@ -465,61 +477,185 @@ function analizarIntencion(mensaje) {
     };
 
 }
+function generarRespuesta(mensaje, analisis) {
 
-function generarRespuesta(
+    const texto = limpiarTexto(mensaje);
 
-    mensaje,
+    const modulo = analisis.modulo;
 
-    analisis
-
-) {
-
-    const modulo =
-        analisis.modulo;
+    const intencion = analisis.intencion;
 
 
-    const intencion =
-        analisis.intencion;
-
-
-    /* =========================
+    /* =================================================
        SALUDO
-       ========================= */
+       ================================================= */
 
-    if (
-
-        intencion === "saludo"
-
-    ) {
+    if (intencion === "saludo") {
 
         return `
-
         Hola bro. 😎
 
         Soy CHINO AI 3.0.
 
-        🧠 Cerebro central activo.
-        💾 Memoria de conversación activa.
+        🧠 Cerebro central: ACTIVO
+        💾 Memoria: ACTIVA
+        🎯 Context Manager: ACTIVO
 
         ¿Qué vamos a construir hoy?
-
         `;
 
     }
 
 
-    /* =========================
+    /* =================================================
        BIBLIA
-       ========================= */
+       ================================================= */
 
-    if (
+    if (modulo === "Biblia") {
 
-        modulo === "Biblia"
+        CHINO.moduloActual = "Biblia";
 
-    ) {
 
-        CHINO.moduloActual =
-            "Biblia";
+        /*
+           Detectar si estamos comenzando
+           una prédica.
+        */
+
+        if (
+            texto.includes("predica") ||
+            texto.includes("predicar") ||
+            texto.includes("sermon")
+        ) {
+
+            CHINO.contexto = {
+
+                proyecto: "predica",
+
+                tema: null,
+
+                audiencia: null,
+
+                detalles: []
+
+            };
+
+        }
+
+
+        /*
+           Detectar tema después de:
+           "sobre..."
+        */
+
+        if (
+            CHINO.contexto &&
+            CHINO.contexto.proyecto === "predica" &&
+            texto.startsWith("sobre ")
+        ) {
+
+            const tema =
+                mensaje
+                    .substring(6)
+                    .trim();
+
+
+            CHINO.contexto.tema = tema;
+
+        }
+
+
+        /*
+           Detectar audiencia.
+        */
+
+        if (
+            texto.includes("para jovenes") ||
+            texto.includes("para joven")
+        ) {
+
+            if (!CHINO.contexto) {
+
+                CHINO.contexto = {
+
+                    proyecto: "predica",
+
+                    tema: null,
+
+                    audiencia: null,
+
+                    detalles: []
+
+                };
+
+            }
+
+
+            CHINO.contexto.audiencia =
+                "jóvenes";
+
+        }
+
+
+        /*
+           Mostrar contexto actual.
+        */
+
+        let resumen = "";
+
+
+        if (
+            CHINO.contexto &&
+            CHINO.contexto.proyecto
+        ) {
+
+            resumen += `
+            
+            <br><br>
+
+            🧠 <strong>Contexto actual:</strong>
+
+            <br>
+
+            Proyecto:
+            ${CHINO.contexto.proyecto}
+
+            `;
+
+
+            if (
+                CHINO.contexto.tema
+            ) {
+
+                resumen += `
+
+                <br>
+
+                Tema:
+                ${escaparHTML(
+                    CHINO.contexto.tema
+                )}
+
+                `;
+
+            }
+
+
+            if (
+                CHINO.contexto.audiencia
+            ) {
+
+                resumen += `
+
+                <br>
+
+                Audiencia:
+                ${CHINO.contexto.audiencia}
+
+                `;
+
+            }
+
+        }
 
 
         return `
@@ -528,32 +664,27 @@ function generarRespuesta(
 
         <br><br>
 
-        Entendí que tu solicitud está
-        relacionada con la Biblia.
+        Estoy trabajando contigo en
+        tu solicitud bíblica.
+
+        ${resumen}
 
         <br><br>
 
-        La memoria de CHINO está
-        conservando nuestra conversación
-        para mantener el contexto.
+        💾 La memoria y el contexto están activos.
 
         `;
 
     }
 
 
-    /* =========================
+    /* =================================================
        MÚSICA
-       ========================= */
+       ================================================= */
 
-    if (
+    if (modulo === "Música") {
 
-        modulo === "Música"
-
-    ) {
-
-        CHINO.moduloActual =
-            "Música";
+        CHINO.moduloActual = "Música";
 
 
         return `
@@ -567,26 +698,20 @@ function generarRespuesta(
 
         <br><br>
 
-        CHINO conservará el contexto
-        de nuestra conversación.
+        🧠 Context Manager activo.
 
         `;
 
     }
 
 
-    /* =========================
+    /* =================================================
        PODCAST
-       ========================= */
+       ================================================= */
 
-    if (
+    if (modulo === "Podcast") {
 
-        modulo === "Podcast"
-
-    ) {
-
-        CHINO.moduloActual =
-            "Podcast";
+        CHINO.moduloActual = "Podcast";
 
 
         return `
@@ -600,54 +725,65 @@ function generarRespuesta(
 
         <br><br>
 
-        La conversación queda guardada
-        en la memoria temporal de CHINO.
+        🧠 Context Manager activo.
 
         `;
 
     }
 
 
-    /* =========================
+    /* =================================================
        CONTINUACIÓN
-       ========================= */
+       ================================================= */
 
-    if (
-
-        intencion === "continuacion"
-
-    ) {
+    if (intencion === "continuacion") {
 
         return `
 
-        🧠 <strong>CHINO recuerda el contexto.</strong>
+        🧠 <strong>CHINO mantiene el contexto.</strong>
 
         <br><br>
 
-        Seguimos trabajando en el módulo:
+        Seguimos trabajando en:
 
-        <strong>${CHINO.moduloActual}</strong>
+        <strong>
+        ${CHINO.moduloActual}
+        </strong>
 
         <br><br>
 
-        Tu nuevo mensaje fue:
+        Proyecto actual:
 
-        "${escaparHTML(mensaje)}"
+        <strong>
+        ${CHINO.contexto?.proyecto || "general"}
+        </strong>
+
+        <br><br>
+
+        Tema:
+
+        <strong>
+        ${
+            CHINO.contexto?.tema
+            ?
+            escaparHTML(
+                CHINO.contexto.tema
+            )
+            :
+            "todavía no definido"
+        }
+        </strong>
 
         `;
 
     }
 
 
-    /* =========================
+    /* =================================================
        ASISTENTE
-       ========================= */
+       ================================================= */
 
-    if (
-
-        modulo === "Asistente"
-
-    ) {
+    if (modulo === "Asistente") {
 
         CHINO.moduloActual =
             "Asistente";
@@ -655,15 +791,15 @@ function generarRespuesta(
 
         return `
 
-        🤖 <strong>Asistente central activado.</strong>
+        🤖 <strong>Asistente central.</strong>
 
         <br><br>
 
-        Soy CHINO AI 3.0.
+        CHINO AI 3.0 está activo.
 
         <br><br>
 
-        🧠 Cerebro central: ACTIVO
+        🧠 Cerebro: ACTIVO
 
         <br>
 
@@ -671,15 +807,7 @@ function generarRespuesta(
 
         <br>
 
-        📖 Biblia: CONECTADA
-
-        <br>
-
-        🎵 Música: CONECTADA
-
-        <br>
-
-        🎙️ Podcast: CONECTADO
+        🎯 Context Manager: ACTIVO
 
         `;
 
@@ -689,11 +817,6 @@ function generarRespuesta(
     return "Sistema central activo.";
 
 }
-
-
-/* =====================================================
-   MOSTRAR MENSAJE DEL USUARIO
-   ===================================================== */
 
 function mostrarMensajeUsuario(
 
