@@ -142,46 +142,86 @@
   </div>
 
   <script>
-    function enviarMensaje() {
-      const input = document.getElementById("userInput");
-      const chat = document.getElementById("chat");
+  function enviarMensaje() {
+    const input = document.getElementById("userInput");
+    const chat = document.getElementById("chat");
 
-      const mensaje = input.value.trim();
+    const mensaje = input.value.trim();
 
-      if (mensaje === "") return;
+    if (mensaje === "") return;
+
+    chat.innerHTML += `
+      <div class="message user">
+        👤 <strong>Tú:</strong> ${mensaje}
+      </div>
+    `;
+
+    input.value = "";
+
+    setTimeout(() => {
+      let respuesta = "";
+
+      const texto = mensaje.toLowerCase();
+
+      if (texto.includes("hola") || texto.includes("hey")) {
+        respuesta = "Hola. Me alegra tenerte de vuelta. ¿Qué vamos a construir hoy?";
+      } 
+      else if (texto.includes("biblia")) {
+        respuesta = "Módulo Biblia preparado. Puedo ayudarte con estudios, versículos y preparación de enseñanzas.";
+      } 
+      else if (texto.includes("música") || texto.includes("musica")) {
+        respuesta = "Módulo Música preparado. Podemos trabajar con acordes, escalas, ejercicios y adoración.";
+      } 
+      else if (texto.includes("podcast")) {
+        respuesta = "Módulo Podcast preparado. Puedo ayudarte con ideas, guiones, preguntas y contenido.";
+      } 
+      else {
+        respuesta = "Recibido. Todavía estoy desarrollando mi inteligencia, pero mi sistema central está preparado.";
+      }
 
       chat.innerHTML += `
-        <div class="message user">
-          👤 <strong>Tú:</strong> ${mensaje}
+        <div class="message jarvis">
+          🤖 <strong>CHINO:</strong> ${respuesta}
         </div>
       `;
 
-      input.value = "";
-
-      setTimeout(() => {
-        chat.innerHTML += `
-          <div class="message jarvis">
-            🤖 <strong>CHINO:</strong> Recibido. Mi sistema central está preparado. Pronto podremos conectar mi inteligencia artificial.
-          </div>
-        `;
-
-        chat.scrollTop = chat.scrollHeight;
-      }, 500);
-
       chat.scrollTop = chat.scrollHeight;
+
+    }, 500);
+
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+
+  function modulo(nombre) {
+    const chat = document.getElementById("chat");
+
+    let respuesta = "";
+
+    if (nombre === "Biblia") {
+      respuesta = "Módulo Biblia activado. Preparado para ayudarte con estudios, versículos y enseñanzas.";
     }
 
-    function modulo(nombre) {
-      const chat = document.getElementById("chat");
-
-      chat.innerHTML += `
-        <div class="message CHINO">
-          🤖 <strong>CHINO:</strong> Módulo ${nombre} seleccionado.
-        </div>
-      `;
-
-      chat.scrollTop = chat.scrollHeight;
+    if (nombre === "Música") {
+      respuesta = "Módulo Música activado. Preparado para acordes, escalas, ejercicios y adoración.";
     }
+
+    if (nombre === "Podcast") {
+      respuesta = "Módulo Podcast activado. Preparado para ideas, guiones y contenido.";
+    }
+
+    if (nombre === "Asistente") {
+      respuesta = "Módulo central activado. ¿Qué tarea quieres que realice?";
+    }
+
+    chat.innerHTML += `
+      <div class="message jarvis">
+        🤖 <strong>CHINO:</strong> ${respuesta}
+      </div>
+    `;
+
+    chat.scrollTop = chat.scrollHeight;
+  }
   </script>
 
 </body>
