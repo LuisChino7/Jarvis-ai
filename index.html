@@ -433,24 +433,45 @@ function generarRespuesta(mensaje, analisis) {
 
         // Detectar solicitud de puntos
         if (
-            texto.includes("dame 3 puntos") ||
-            texto.includes("3 puntos") ||
-            texto.includes("tres puntos")
-        ) {
+    texto.includes("dame 3 puntos") ||
+    texto.includes("3 puntos") ||
+    texto.includes("tres puntos")
+) {
 
-            let tema = CHINO.contexto.tema || "el tema indicado";
-            let audiencia = CHINO.contexto.audiencia || "la audiencia indicada";
+    const tema = CHINO.contexto.tema || "el tema indicado";
+    const audiencia = CHINO.contexto.audiencia || "general";
 
-            return `
-🧠 Entendí tu contexto.
+    if (tema.toLowerCase().includes("david")) {
 
-📖 Proyecto: ${CHINO.contexto.proyecto || "prédica"}
-🎯 Tema: ${tema}
+        return `
+📖 PRÉDICA: DAVID
+
 👥 Audiencia: ${audiencia}
 
-🔥 Voy a preparar 3 puntos para una prédica sobre ${tema}, dirigida a ${audiencia}.
-            `;
-        }
+🔥 3 PUNTOS
+
+1. David aprendió a confiar en Dios antes de enfrentar a Goliat.
+
+2. David no permitió que las opiniones de otros definieran su identidad.
+
+3. David aprendió a esperar el tiempo de Dios para cumplir su propósito.
+
+🧠 Contexto conservado:
+Tema: ${tema}
+Audiencia: ${audiencia}
+        `;
+    }
+
+    return `
+📖 PRÉDICA: ${tema}
+
+👥 Audiencia: ${audiencia}
+
+🔥 3 PUNTOS
+
+Puedo preparar los puntos tomando en cuenta el tema y la audiencia.
+    `;
+}
 
         return `
 📖 Módulo Biblia activado.
