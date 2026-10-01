@@ -1,21 +1,188 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARVIS AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JARVIS AI</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #050b14;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 30px 20px 15px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin: 0;
+      color: #00d9ff;
+      text-shadow: 0 0 20px #00d9ff;
+    }
+
+    .subtitle {
+      color: #8ea5b8;
+      margin-top: 8px;
+    }
+
+    .chat {
+      width: 90%;
+      max-width: 700px;
+      height: 400px;
+      margin: 25px auto;
+      background: #0b1420;
+      border: 1px solid #17354d;
+      border-radius: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .message {
+      margin: 12px 0;
+      padding: 12px 15px;
+      border-radius: 12px;
+      max-width: 80%;
+    }
+
+    .jarvis {
+      background: #102638;
+      border-left: 3px solid #00d9ff;
+    }
+
+    .user {
+      background: #17351f;
+      margin-left: auto;
+      border-right: 3px solid #00ff88;
+    }
+
+    .input-area {
+      width: 90%;
+      max-width: 700px;
+      margin: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #24445c;
+      background: #0b1420;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      padding: 14px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #00bcd4;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00e5ff;
+    }
+
+    .modules {
+      margin: 30px auto;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .module {
+      background: #101d2b;
+      border: 1px solid #1d4058;
+    }
+  </style>
 </head>
 
 <body>
 
+  <header>
     <h1>JARVIS AI</h1>
+    <p class="subtitle">Asistente central de IA personal</p>
+  </header>
 
-    <p>Asistente central de IA personal</p>
+  <div class="chat" id="chat">
+    <div class="message jarvis">
+      🤖 <strong>JARVIS:</strong> Sistema iniciado. ¿En qué puedo ayudarte?
+    </div>
+  </div>
 
-    <button>📖 Biblia</button>
-    <button>🎸 Música</button>
-    <button>🎙️ Podcast</button>
-    <button>🧠 Asistente</button>
+  <div class="input-area">
+    <input
+      type="text"
+      id="userInput"
+      placeholder="Escribe un mensaje..."
+      onkeydown="if(event.key === 'Enter') enviarMensaje()"
+    >
+
+    <button onclick="enviarMensaje()">Enviar</button>
+  </div>
+
+  <div class="modules">
+    <button class="module" onclick="modulo('Biblia')">📖 Biblia</button>
+    <button class="module" onclick="modulo('Música')">🎵 Música</button>
+    <button class="module" onclick="modulo('Podcast')">🎙️ Podcast</button>
+    <button class="module" onclick="modulo('Asistente')">🧠 Asistente</button>
+  </div>
+
+  <script>
+    function enviarMensaje() {
+      const input = document.getElementById("userInput");
+      const chat = document.getElementById("chat");
+
+      const mensaje = input.value.trim();
+
+      if (mensaje === "") return;
+
+      chat.innerHTML += `
+        <div class="message user">
+          👤 <strong>Tú:</strong> ${mensaje}
+        </div>
+      `;
+
+      input.value = "";
+
+      setTimeout(() => {
+        chat.innerHTML += `
+          <div class="message jarvis">
+            🤖 <strong>JARVIS:</strong> Recibido. Mi sistema central está preparado. Pronto podremos conectar mi inteligencia artificial.
+          </div>
+        `;
+
+        chat.scrollTop = chat.scrollHeight;
+      }, 500);
+
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function modulo(nombre) {
+      const chat = document.getElementById("chat");
+
+      chat.innerHTML += `
+        <div class="message jarvis">
+          🤖 <strong>JARVIS:</strong> Módulo ${nombre} seleccionado.
+        </div>
+      `;
+
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
 
 </body>
 </html>
