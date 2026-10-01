@@ -142,86 +142,627 @@
   </div>
 
   <script>
-  function enviarMensaje() {
-    const input = document.getElementById("userInput");
+
+/* =====================================================
+   CHINO AI 3.0
+   CEREBRO CENTRAL - ROUTER DE INTENCIONES
+   ===================================================== */
+
+
+/* =====================================================
+   CONFIGURACIÓN PRINCIPAL
+   ===================================================== */
+
+const CHINO = {
+
+    nombre: "CHINO",
+
+    version: "3.0",
+
+    personalidad: "cercana",
+
+    moduloActual: "Asistente",
+
+    estado: "activo"
+
+};
+
+
+/* =====================================================
+   UTILIDADES
+   ===================================================== */
+
+function limpiarTexto(texto) {
+
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+}
+
+
+function escaparHTML(texto) {
+
+    const div = document.createElement("div");
+
+    div.textContent = texto;
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   CEREBRO CENTRAL
+   ===================================================== */
+
+function analizarIntencion(mensaje) {
+
+    const texto = limpiarTexto(mensaje);
+
+
+    /* -------------------------
+       SALUDOS
+       ------------------------- */
+
+    const saludos = [
+        "hola",
+        "hey",
+        "buenas",
+        "buenos dias",
+        "buenas tardes",
+        "buenas noches",
+        "que onda",
+        "que tal"
+    ];
+
+    if (
+        saludos.some(palabra =>
+            texto === palabra ||
+            texto.startsWith(palabra + " ")
+        )
+    ) {
+
+        return {
+            modulo: "Asistente",
+            intencion: "saludo",
+            confianza: 1
+        };
+
+    }
+
+
+    /* -------------------------
+       BIBLIA
+       ------------------------- */
+
+    const palabrasBiblia = [
+
+        "biblia",
+        "versiculo",
+        "versiculos",
+        "pasaje",
+        "pasajes",
+        "predica",
+        "predicar",
+        "predicacion",
+        "sermon",
+        "sermones",
+        "estudio biblico",
+        "estudio de biblia",
+        "capitulo",
+        "versiculo",
+        "evangelio",
+        "jesus",
+        "dios",
+        "apostol",
+        "apostoles",
+        "oracion",
+        "orar",
+        "devocional",
+        "devocionales",
+        "texto biblico",
+        "ensenanza biblica",
+        "ensenanza cristiana"
+    ];
+
+    if (
+        palabrasBiblia.some(palabra =>
+            texto.includes(palabra)
+        )
+    ) {
+
+        return {
+            modulo: "Biblia",
+            intencion: "biblia",
+            confianza: 0.95
+        };
+
+    }
+
+
+    /* -------------------------
+       MÚSICA
+       ------------------------- */
+
+    const palabrasMusica = [
+
+        "musica",
+        "cancion",
+        "canciones",
+        "acorde",
+        "acordes",
+        "guitarra",
+        "teclado",
+        "piano",
+        "bateria",
+        "bajo",
+        "instrumento",
+        "instrumentos",
+        "escala",
+        "escalas",
+        "ritmo",
+        "ritmos",
+        "tonalidad",
+        "tonalidades",
+        "transpose",
+        "transponer",
+        "adoracion",
+        "alabanza",
+        "worship",
+        "ensayo",
+        "musico",
+        "musicos"
+    ];
+
+    if (
+        palabrasMusica.some(palabra =>
+            texto.includes(palabra)
+        )
+    ) {
+
+        return {
+            modulo: "Música",
+            intencion: "musica",
+            confianza: 0.95
+        };
+
+    }
+
+
+    /* -------------------------
+       PODCAST
+       ------------------------- */
+
+    const palabrasPodcast = [
+
+        "podcast",
+        "episodio",
+        "episodios",
+        "guion",
+        "guiones",
+        "entrevista",
+        "entrevistas",
+        "preguntas para podcast",
+        "tema para podcast",
+        "temas para podcast",
+        "invitado",
+        "invitados",
+        "grabacion",
+        "contenido para podcast",
+        "nombre para podcast"
+    ];
+
+    if (
+        palabrasPodcast.some(palabra =>
+            texto.includes(palabra)
+        )
+    ) {
+
+        return {
+            modulo: "Podcast",
+            intencion: "podcast",
+            confianza: 0.95
+        };
+
+    }
+
+
+    /* -------------------------
+       ASISTENTE
+       ------------------------- */
+
+    const palabrasAsistente = [
+
+        "ayudame",
+        "ayuda",
+        "puedes ayudarme",
+        "que puedes hacer",
+        "que sabes hacer",
+        "quien eres",
+        "quien es chino",
+        "chino",
+        "organiza",
+        "organizar",
+        "recordatorio",
+        "recuerdame",
+        "tarea",
+        "tareas",
+        "plan",
+        "planes",
+        "idea",
+        "ideas"
+    ];
+
+    if (
+        palabrasAsistente.some(palabra =>
+            texto.includes(palabra)
+        )
+    ) {
+
+        return {
+            modulo: "Asistente",
+            intencion: "asistente",
+            confianza: 0.85
+        };
+
+    }
+
+
+    /* -------------------------
+       DESCONOCIDO
+       ------------------------- */
+
+    return {
+
+        modulo: "Asistente",
+        intencion: "general",
+        confianza: 0.30
+
+    };
+
+}
+
+
+/* =====================================================
+   RESPUESTAS DEL CEREBRO
+   ===================================================== */
+
+function generarRespuesta(mensaje, analisis) {
+
+    const modulo = analisis.modulo;
+
+    const intencion = analisis.intencion;
+
+
+    /* -------------------------
+       SALUDO
+       ------------------------- */
+
+    if (intencion === "saludo") {
+
+        return "Hola bro. 😎 Soy CHINO AI 3.0. Mi cerebro central está activo. ¿Qué vamos a construir hoy?";
+
+    }
+
+
+    /* -------------------------
+       BIBLIA
+       ------------------------- */
+
+    if (modulo === "Biblia") {
+
+        CHINO.moduloActual = "Biblia";
+
+        return `
+        📖 <strong>Módulo Biblia activado.</strong><br><br>
+
+        Entendí que tu solicitud está relacionada con la Biblia.
+        Puedo ayudarte a trabajar en estudios bíblicos,
+        prédicas, devocionales, versículos, personajes,
+        temas y enseñanzas.
+        `;
+
+    }
+
+
+    /* -------------------------
+       MÚSICA
+       ------------------------- */
+
+    if (modulo === "Música") {
+
+        CHINO.moduloActual = "Música";
+
+        return `
+        🎵 <strong>Módulo Música activado.</strong><br><br>
+
+        Entendí que estás trabajando con música.
+        Podemos desarrollar acordes, escalas,
+        ejercicios, instrumentos, ritmos,
+        alabanza y adoración.
+        `;
+
+    }
+
+
+    /* -------------------------
+       PODCAST
+       ------------------------- */
+
+    if (modulo === "Podcast") {
+
+        CHINO.moduloActual = "Podcast";
+
+        return `
+        🎙️ <strong>Módulo Podcast activado.</strong><br><br>
+
+        Entendí que estás trabajando en contenido
+        para podcast. Podemos desarrollar temas,
+        preguntas, guiones, episodios e ideas.
+        `;
+
+    }
+
+
+    /* -------------------------
+       ASISTENTE
+       ------------------------- */
+
+    if (modulo === "Asistente") {
+
+        CHINO.moduloActual = "Asistente";
+
+
+        if (intencion === "asistente") {
+
+            return `
+            🧠 <strong>Asistente central activado.</strong><br><br>
+
+            Soy CHINO AI 3.0.
+            Mi función es coordinar los diferentes módulos
+            y ayudarte a decidir qué sistema debe encargarse
+            de cada solicitud.
+            `;
+
+        }
+
+
+        return `
+        🤖 <strong>CHINO:</strong><br><br>
+
+        Recibí tu mensaje, pero todavía no tengo suficiente
+        información para dirigirlo a un módulo específico.
+
+        Puedes pedirme algo relacionado con Biblia,
+        Música, Podcast o Asistente.
+        `;
+
+    }
+
+
+    return "Sistema central activo.";
+
+}
+
+
+/* =====================================================
+   MOSTRAR MENSAJES
+   ===================================================== */
+
+function mostrarMensajeUsuario(mensaje) {
+
     const chat = document.getElementById("chat");
+
+    const mensajeSeguro = escaparHTML(mensaje);
+
+    chat.innerHTML += `
+
+        <div class="message user">
+
+            👤 <strong>Tú:</strong> ${mensajeSeguro}
+
+        </div>
+
+    `;
+
+    chat.scrollTop = chat.scrollHeight;
+
+}
+
+
+function mostrarRespuesta(respuesta) {
+
+    const chat = document.getElementById("chat");
+
+    chat.innerHTML += `
+
+        <div class="message jarvis">
+
+            🤖 <strong>CHINO:</strong> ${respuesta}
+
+        </div>
+
+    `;
+
+    chat.scrollTop = chat.scrollHeight;
+
+}
+
+
+/* =====================================================
+   FUNCIÓN PRINCIPAL
+   ===================================================== */
+
+function enviarMensaje() {
+
+    const input = document.getElementById("userInput");
 
     const mensaje = input.value.trim();
 
+
     if (mensaje === "") return;
 
-    chat.innerHTML += `
-      <div class="message user">
-        👤 <strong>Tú:</strong> ${mensaje}
-      </div>
-    `;
+
+    /* Mostrar mensaje */
+
+    mostrarMensajeUsuario(mensaje);
+
+
+    /* Limpiar entrada */
 
     input.value = "";
 
+
+    /* Pensamiento del cerebro */
+
     setTimeout(() => {
-      let respuesta = "";
 
-      const texto = mensaje.toLowerCase();
 
-      if (texto.includes("hola") || texto.includes("hey")) {
-        respuesta = "Hola. Me alegra tenerte de vuelta. ¿Qué vamos a construir hoy?";
-      } 
-      else if (texto.includes("biblia")) {
-        respuesta = "Módulo Biblia preparado. Puedo ayudarte con estudios, versículos y preparación de enseñanzas.";
-      } 
-      else if (texto.includes("música") || texto.includes("musica")) {
-        respuesta = "Módulo Música preparado. Podemos trabajar con acordes, escalas, ejercicios y adoración.";
-      } 
-      else if (texto.includes("podcast")) {
-        respuesta = "Módulo Podcast preparado. Puedo ayudarte con ideas, guiones, preguntas y contenido.";
-      } 
-      else {
-        respuesta = "Recibido. Todavía estoy desarrollando mi inteligencia, pero mi sistema central está preparado.";
-      }
+        /* Analizar intención */
 
-      chat.innerHTML += `
-        <div class="message jarvis">
-          🤖 <strong>CHINO:</strong> ${respuesta}
-        </div>
-      `;
+        const analisis = analizarIntencion(mensaje);
 
-      chat.scrollTop = chat.scrollHeight;
+
+        console.log(
+            "🧠 CHINO AI - Análisis:",
+            analisis
+        );
+
+
+        /* Generar respuesta */
+
+        const respuesta =
+            generarRespuesta(
+                mensaje,
+                analisis
+            );
+
+
+        /* Mostrar respuesta */
+
+        mostrarRespuesta(respuesta);
+
 
     }, 500);
 
-    chat.scrollTop = chat.scrollHeight;
-  }
+}
 
 
-  function modulo(nombre) {
+/* =====================================================
+   ACTIVACIÓN MANUAL DE MÓDULOS
+   ===================================================== */
+
+function modulo(nombre) {
+
     const chat = document.getElementById("chat");
 
     let respuesta = "";
 
+
+    /* -------------------------
+       BIBLIA
+       ------------------------- */
+
     if (nombre === "Biblia") {
-      respuesta = "Módulo Biblia activado. Preparado para ayudarte con estudios, versículos y enseñanzas.";
+
+        CHINO.moduloActual = "Biblia";
+
+        respuesta = `
+        📖 <strong>Módulo Biblia activado.</strong><br><br>
+
+        Estoy listo para ayudarte con estudios,
+        versículos, prédicas y enseñanzas.
+        `;
+
     }
+
+
+    /* -------------------------
+       MÚSICA
+       ------------------------- */
 
     if (nombre === "Música") {
-      respuesta = "Módulo Música activado. Preparado para acordes, escalas, ejercicios y adoración.";
+
+        CHINO.moduloActual = "Música";
+
+        respuesta = `
+        🎵 <strong>Módulo Música activado.</strong><br><br>
+
+        Estoy listo para ayudarte con acordes,
+        escalas, ejercicios, instrumentos,
+        alabanza y adoración.
+        `;
+
     }
+
+
+    /* -------------------------
+       PODCAST
+       ------------------------- */
 
     if (nombre === "Podcast") {
-      respuesta = "Módulo Podcast activado. Preparado para ideas, guiones y contenido.";
+
+        CHINO.moduloActual = "Podcast";
+
+        respuesta = `
+        🎙️ <strong>Módulo Podcast activado.</strong><br><br>
+
+        Estoy listo para ayudarte con ideas,
+        guiones, preguntas y contenido.
+        `;
+
     }
+
+
+    /* -------------------------
+       ASISTENTE
+       ------------------------- */
 
     if (nombre === "Asistente") {
-      respuesta = "Módulo central activado. ¿Qué tarea quieres que realice?";
+
+        CHINO.moduloActual = "Asistente";
+
+        respuesta = `
+        🧠 <strong>Cerebro central activado.</strong><br><br>
+
+        Soy el centro de CHINO AI.
+        Estoy preparado para dirigir tus solicitudes
+        al módulo correspondiente.
+        `;
+
     }
 
+
     chat.innerHTML += `
-      <div class="message jarvis">
-        🤖 <strong>CHINO:</strong> ${respuesta}
-      </div>
+
+        <div class="message jarvis">
+
+            🤖 <strong>CHINO:</strong> ${respuesta}
+
+        </div>
+
     `;
 
+
     chat.scrollTop = chat.scrollHeight;
-  }
+
+}
+
+
+/* =====================================================
+   INICIALIZACIÓN
+   ===================================================== */
+
+console.log("=================================");
+console.log("CHINO AI 3.0");
+console.log("Cerebro central iniciado");
+console.log("Estado:", CHINO.estado);
+console.log("Módulo:", CHINO.moduloActual);
+console.log("=================================");
+
   </script>
 
 </body>
