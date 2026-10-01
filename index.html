@@ -786,30 +786,27 @@ function enviarMensaje() {
 
         /* Analizar */
 
-        const analisis =
-            analizarIntencion(
-                mensaje
-            );
+const analisis =
+    analizarIntencion(
+        mensaje
+    );
 
 CHINO.moduloActual = analisis.modulo;
-        console.log(
 
-            "🧠 Análisis:",
-            analisis
+console.log(
+    "Análisis:",
+    analisis
+);
 
-        );
+/* Generar */
 
+const respuesta =
+    generarRespuesta(
+        mensaje,
+        analisis
+    );
 
-        /* Generar */
-
-        const respuesta =
-            generarRespuesta(
-
-                mensaje,
-
-                analisis
-
-            );
+/* Guardar respuesta */
 
 
         /* Guardar respuesta */
