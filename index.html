@@ -488,7 +488,57 @@ Audiencia: ${CHINO.contexto.audiencia || "general"}
 Puedes seguir agregando instrucciones y conservaré este contexto.
         `;
     }
+// =====================================
+// DESARROLLAR UN PUNTO
+// =====================================
 
+if (
+    texto.includes("desarrolla el punto") ||
+    texto.includes("desarrollar el punto") ||
+    texto.includes("explica el punto")
+) {
+
+    let numeroPunto = null;
+
+    if (texto.includes("punto 1") || texto.includes("punto uno")) {
+        numeroPunto = 1;
+    }
+
+    if (texto.includes("punto 2") || texto.includes("punto dos")) {
+        numeroPunto = 2;
+    }
+
+    if (texto.includes("punto 3") || texto.includes("punto tres")) {
+        numeroPunto = 3;
+    }
+
+    if (
+        numeroPunto &&
+        CHINO.contexto.detalles &&
+        CHINO.contexto.detalles.length >= numeroPunto
+    ) {
+
+        const punto = CHINO.contexto.detalles[numeroPunto - 1];
+
+        return `
+📖 DESARROLLO DEL PUNTO ${numeroPunto}
+
+🎯 Tema: ${CHINO.contexto.tema}
+
+👥 Audiencia: ${CHINO.contexto.audiencia}
+
+🔥 Punto:
+${punto}
+
+🧠 CHINO reconoce que estás desarrollando este punto de tu prédica.
+        `;
+    }
+
+    return `
+🧠 No encontré el punto que quieres desarrollar.
+Primero genera los 3 puntos de la prédica.
+    `;
+}
     // =========================
     // MÚSICA
     // =========================
